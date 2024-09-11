@@ -7,14 +7,28 @@
         public string VIN { get; set; }
         public string Description { get; set; }
         public int YearOfProductionId { get; set; }
-        public int CarTrimId { get; set; }
+        public int CarBrandId { get; set; }
+        public int CarModelId { get; set; }
+        public int? CarTrimId { get; set; }
+        public CarStatus Status { get; set; }
 
-
-        public bool IsAvailable { get; set; } 
-        public virtual ICollection<CarCarTrim> CarCarTrim { get; set; }
-        public virtual ICollection<CarMedia> CarMedia { get; set; }
         public virtual YearOfProduction YearOfProduction { get; set; }
+        public virtual CarBrand CarBrand { get; set; }
+        public virtual CarModel CarModel { get; set; }
+        public virtual CarTrim? CarTrim { get; set; }
+        public virtual ICollection<CarMedia>? CarMedia { get; set; }
+        public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<Sale>? Sales { get; set; }
+        public virtual ICollection<Repair>? Repairs { get; set; }
 
+    }
+
+    public enum CarStatus
+    {
+        Purchased = 0,
+        InRepair = 1,
+        Available = 2,        
+        Sold = 3   
     }
 
 }

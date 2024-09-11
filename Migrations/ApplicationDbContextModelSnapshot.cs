@@ -3,23 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OC_P5.Data;
 
 #nullable disable
 
-namespace OC_P5.Data.Migrations
+namespace OC_P5.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240908164416_InitialCreate")]
-    partial class InitialCreate
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.32")
+                .HasAnnotation("ProductVersion", "6.0.33")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -234,19 +232,25 @@ namespace OC_P5.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CarTrimId")
+                    b.Property<int>("CarBrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CarTrimId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("VIN")
                         .IsRequired()
@@ -256,6 +260,10 @@ namespace OC_P5.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarBrandId");
+
+                    b.HasIndex("CarModelId");
 
                     b.HasIndex("CarTrimId");
 
@@ -281,21 +289,6 @@ namespace OC_P5.Data.Migrations
                     b.ToTable("CarBrands");
                 });
 
-            modelBuilder.Entity("OC_P5.Models.CarCarTrim", b =>
-                {
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarTrimId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarId", "CarTrimId");
-
-                    b.HasIndex("CarTrimId");
-
-                    b.ToTable("CarCarTrim");
-                });
-
             modelBuilder.Entity("OC_P5.Models.CarMedia", b =>
                 {
                     b.Property<int>("CarId")
@@ -308,7 +301,7 @@ namespace OC_P5.Data.Migrations
 
                     b.HasIndex("MediaId");
 
-                    b.ToTable("CarMedia");
+                    b.ToTable("CarMedias");
                 });
 
             modelBuilder.Entity("OC_P5.Models.CarModel", b =>
@@ -333,6 +326,21 @@ namespace OC_P5.Data.Migrations
                     b.ToTable("CarModels");
                 });
 
+            modelBuilder.Entity("OC_P5.Models.CarModelCarTrim", b =>
+                {
+                    b.Property<int>("CarModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarTrimId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarModelId", "CarTrimId");
+
+                    b.HasIndex("CarTrimId");
+
+                    b.ToTable("CarModelCarTrims");
+                });
+
             modelBuilder.Entity("OC_P5.Models.CarTrim", b =>
                 {
                     b.Property<int>("Id")
@@ -341,16 +349,11 @@ namespace OC_P5.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CarModelId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TrimLabel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarModelId");
 
                     b.ToTable("CarTrims");
                 });
@@ -381,6 +384,82 @@ namespace OC_P5.Data.Migrations
                     b.ToTable("Media");
                 });
 
+            modelBuilder.Entity("OC_P5.Models.Purchase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PurchasePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Purchases");
+                });
+
+            modelBuilder.Entity("OC_P5.Models.Repair", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("RepairCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("RepairDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Repairs");
+                });
+
+            modelBuilder.Entity("OC_P5.Models.Sale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("SalePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Sales");
+                });
+
             modelBuilder.Entity("OC_P5.Models.TypeOfMedia", b =>
                 {
                     b.Property<int>("Id")
@@ -395,7 +474,7 @@ namespace OC_P5.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeOfMedia");
+                    b.ToTable("TypeOfMedias");
                 });
 
             modelBuilder.Entity("OC_P5.Models.YearOfProduction", b =>
@@ -411,7 +490,7 @@ namespace OC_P5.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("YearOfProduction");
+                    b.ToTable("YearOfProductions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -467,11 +546,21 @@ namespace OC_P5.Data.Migrations
 
             modelBuilder.Entity("OC_P5.Models.Car", b =>
                 {
-                    b.HasOne("OC_P5.Models.CarTrim", null)
+                    b.HasOne("OC_P5.Models.CarBrand", "CarBrand")
                         .WithMany("Cars")
-                        .HasForeignKey("CarTrimId")
+                        .HasForeignKey("CarBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("OC_P5.Models.CarModel", "CarModel")
+                        .WithMany("Cars")
+                        .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OC_P5.Models.CarTrim", "CarTrim")
+                        .WithMany()
+                        .HasForeignKey("CarTrimId");
 
                     b.HasOne("OC_P5.Models.YearOfProduction", "YearOfProduction")
                         .WithMany("Cars")
@@ -479,26 +568,13 @@ namespace OC_P5.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("YearOfProduction");
-                });
+                    b.Navigation("CarBrand");
 
-            modelBuilder.Entity("OC_P5.Models.CarCarTrim", b =>
-                {
-                    b.HasOne("OC_P5.Models.Car", "Car")
-                        .WithMany("CarCarTrim")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OC_P5.Models.CarTrim", "CarTrim")
-                        .WithMany("CarCarTrims")
-                        .HasForeignKey("CarTrimId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
+                    b.Navigation("CarModel");
 
                     b.Navigation("CarTrim");
+
+                    b.Navigation("YearOfProduction");
                 });
 
             modelBuilder.Entity("OC_P5.Models.CarMedia", b =>
@@ -531,11 +607,23 @@ namespace OC_P5.Data.Migrations
                     b.Navigation("CarBrand");
                 });
 
-            modelBuilder.Entity("OC_P5.Models.CarTrim", b =>
+            modelBuilder.Entity("OC_P5.Models.CarModelCarTrim", b =>
                 {
-                    b.HasOne("OC_P5.Models.CarModel", null)
-                        .WithMany("CarTrims")
-                        .HasForeignKey("CarModelId");
+                    b.HasOne("OC_P5.Models.CarModel", "CarModel")
+                        .WithMany("CarModelCarTrims")
+                        .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OC_P5.Models.CarTrim", "CarTrim")
+                        .WithMany("CarModelCarTrims")
+                        .HasForeignKey("CarTrimId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CarModel");
+
+                    b.Navigation("CarTrim");
                 });
 
             modelBuilder.Entity("OC_P5.Models.Media", b =>
@@ -549,28 +637,67 @@ namespace OC_P5.Data.Migrations
                     b.Navigation("TypeOfMedia");
                 });
 
+            modelBuilder.Entity("OC_P5.Models.Purchase", b =>
+                {
+                    b.HasOne("OC_P5.Models.Car", "Car")
+                        .WithMany("Purchases")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("OC_P5.Models.Repair", b =>
+                {
+                    b.HasOne("OC_P5.Models.Car", "Car")
+                        .WithMany("Repairs")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("OC_P5.Models.Sale", b =>
+                {
+                    b.HasOne("OC_P5.Models.Car", "Car")
+                        .WithMany("Sales")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("OC_P5.Models.Car", b =>
                 {
-                    b.Navigation("CarCarTrim");
-
                     b.Navigation("CarMedia");
+
+                    b.Navigation("Purchases");
+
+                    b.Navigation("Repairs");
+
+                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("OC_P5.Models.CarBrand", b =>
                 {
                     b.Navigation("CarModels");
+
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("OC_P5.Models.CarModel", b =>
                 {
-                    b.Navigation("CarTrims");
+                    b.Navigation("CarModelCarTrims");
+
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("OC_P5.Models.CarTrim", b =>
                 {
-                    b.Navigation("CarCarTrims");
-
-                    b.Navigation("Cars");
+                    b.Navigation("CarModelCarTrims");
                 });
 
             modelBuilder.Entity("OC_P5.Models.Media", b =>

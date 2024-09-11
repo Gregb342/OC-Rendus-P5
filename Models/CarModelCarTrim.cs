@@ -1,11 +1,11 @@
 ﻿namespace OC_P5.Models
 {
-    public class CarCarTrim
+    public class CarModelCarTrim
     {
-        public int CarId { get; set; }
+        public int CarModelId { get; set; }
         public int CarTrimId { get; set; }
 
-        public virtual Car Car { get; set; }
+        public virtual CarModel CarModel { get; set; }
         public virtual CarTrim CarTrim { get; set; }
     }
 }

@@ -6,7 +6,9 @@
         public string Model { get; set; }
         public int CarBrandId { get; set; }
 
+
         public virtual CarBrand CarBrand { get; set; }
-        public virtual ICollection<CarTrim> CarTrims { get; set; }
+        public virtual ICollection<CarModelCarTrim> CarModelCarTrims { get; set; }
+        public virtual ICollection<Car> Cars { get; set; }
     }
 }
