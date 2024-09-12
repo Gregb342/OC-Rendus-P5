@@ -7,6 +7,7 @@ namespace OC_P5.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        #region DbSets
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<CarModel> CarModels { get; set; }
@@ -18,9 +19,7 @@ namespace OC_P5.Data
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<YearOfProduction> YearOfProductions { get; set; }
-
-
-
+        #endregion
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -55,14 +54,15 @@ namespace OC_P5.Data
                 .HasForeignKey(c => c.CarModelId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed data
-            //YearOfProductionSeed.Seed(modelBuilder);
-            //TypeOfMediaSeed.Seed(modelBuilder);
-            //CarBrandSeed.Seed(modelBuilder);
-            //CarModelSeed.Seed(modelBuilder);
-            //CarTrimSeed.Seed(modelBuilder);
-            //CarCarTrimSeed.Seed(modelBuilder);
-            //CarSeed.Seed(modelBuilder);
+            #region Seed data
+            YearOfProductionSeed.Seed(modelBuilder);
+            TypeOfMediaSeed.Seed(modelBuilder);
+            CarBrandSeed.Seed(modelBuilder);
+            CarModelSeed.Seed(modelBuilder);
+            CarModelCarTrimSeed.Seed(modelBuilder);
+            CarTrimSeed.Seed(modelBuilder);
+            CarSeed.Seed(modelBuilder);
+            #endregion
 
         }
     }
