@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OC_P5.Data;
+using OC_P5.Data.Repositories;
+using OC_P5.Data.Repositories.Interfaces;
+using OC_P5.Services;
+using OC_P5.Services.Interfaces;
 
 namespace OC_P5
 {
@@ -19,6 +23,9 @@ namespace OC_P5
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<ICarRepository, CarRepository>();
+            builder.Services.AddScoped<ICarService, CarService>();
 
             var app = builder.Build();
 

@@ -27,6 +27,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.YearOfProduction)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarBrand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarTrim)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,6 +56,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.YearOfProduction.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarBrand.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarModel.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarTrim.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
