@@ -1,4 +1,4 @@
-﻿@model OC_P5.Models.Car
+﻿@model OC_P5.ViewModels.CarViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -38,29 +38,29 @@
             @Html.DisplayNameFor(model => model.YearOfProduction)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearOfProduction.Id)
+            @Html.DisplayFor(model => model.YearOfProduction)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CarBrand)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarBrand.Id)
+            @Html.DisplayFor(model => model.CarBrand)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CarModel)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarModel.Id)
+            @Html.DisplayFor(model => model.CarModel)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CarTrim)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarTrim.Id)
+            @Html.DisplayFor(model => model.CarTrim)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
