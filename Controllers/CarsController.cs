@@ -98,12 +98,22 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status, CarBrand, CarModel, CarTrim")] CarViewModel car)
         {
             if (id != car.Id)
             {
                 return NotFound();
             }
+            //if (!ModelState.IsValid)
+            //{
+            //    var errors = ModelState.Values.SelectMany(v => v.Errors);
+            //    foreach (var error in errors)
+            //    {
+            //        Console.WriteLine(error.ErrorMessage);
+            //    }
+
+            //    return View(car);
+            //}
 
             if (ModelState.IsValid)
             {

@@ -1,4 +1,5 @@
-﻿using OC_P5.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using OC_P5.Models;
 
 namespace OC_P5.ViewModels
 {
@@ -14,9 +15,13 @@ namespace OC_P5.ViewModels
         public int? CarTrimId { get; set; }
         public CarStatus Status { get; set; }
 
+        [BindNever]
         public int YearOfProduction { get; set; }
+        [BindNever]
         public string CarBrand { get; set; }
+        [BindNever]
         public string CarModel { get; set; }
+        [BindNever]
         public string? CarTrim { get; set; }
     }
 }
