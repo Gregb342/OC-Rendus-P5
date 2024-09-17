@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,6 +29,17 @@ namespace OC_P5.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<CarViewModel> cars = await _carService.GetAllCarsAsync();
+
+            ViewData["CarBrandColumn"] = "Car Brand";
+            ViewData["CarModelColumn"] = "Car Model";
+            ViewData["CarTrimColumn"] = "Car Trim";
+
+            foreach (var car in cars)
+            {
+                ViewData[$"CarBrand_{car.Id}"] = _context.CarBrands.FirstOrDefault(b => b.Id == car.CarBrandId)?.Brand;
+                ViewData[$"CarModel_{car.Id}"] = _context.CarModels.FirstOrDefault(m => m.Id == car.CarModelId)?.Model;
+                ViewData[$"CarTrim_{car.Id}"] = _context.CarTrims.FirstOrDefault(t => t.Id == car.CarTrimId)?.TrimLabel;
+            }
             return View(cars);
         }
 
@@ -44,6 +56,18 @@ namespace OC_P5.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["CarBrandColumn"] = "Car Brand";
+            ViewData["CarModelColumn"] = "Car Model";
+            ViewData["CarTrimColumn"] = "Car Trim";
+
+            var carBrand = await _context.CarBrands.FirstOrDefaultAsync(b => b.Id == car.CarBrandId);
+            var carModel = await _context.CarModels.FirstOrDefaultAsync(m => m.Id == car.CarModelId);
+            var carTrim = await _context.CarTrims.FirstOrDefaultAsync(t => t.Id == car.CarTrimId);
+
+            ViewData["CarBrand"] = carBrand?.Brand;
+            ViewData["CarModel"] = carModel?.Model;
+            ViewData["CarTrim"] = carTrim?.TrimLabel;
 
             return View(car);
         }
@@ -98,28 +122,18 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status, CarBrand, CarModel, CarTrim")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status")] CarViewModel car)
         {
             if (id != car.Id)
             {
                 return NotFound();
             }
-            //if (!ModelState.IsValid)
-            //{
-            //    var errors = ModelState.Values.SelectMany(v => v.Errors);
-            //    foreach (var error in errors)
-            //    {
-            //        Console.WriteLine(error.ErrorMessage);
-            //    }
-
-            //    return View(car);
-            //}
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _carService.UpdateCarAsync(car);
+                    await _carService.UpdateCarAsync(id, car);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,6 +168,18 @@ namespace OC_P5.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["CarBrandColumn"] = "Car Brand";
+            ViewData["CarModelColumn"] = "Car Model";
+            ViewData["CarTrimColumn"] = "Car Trim";
+
+            var carBrand = await _context.CarBrands.FirstOrDefaultAsync(b => b.Id == car.CarBrandId);
+            var carModel = await _context.CarModels.FirstOrDefaultAsync(m => m.Id == car.CarModelId);
+            var carTrim = await _context.CarTrims.FirstOrDefaultAsync(t => t.Id == car.CarTrimId);
+
+            ViewData["CarBrand"] = carBrand?.Brand;
+            ViewData["CarModel"] = carModel?.Model;
+            ViewData["CarTrim"] = carTrim?.TrimLabel;
 
             return View(car);
         }

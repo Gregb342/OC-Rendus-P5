@@ -32,6 +32,7 @@ namespace OC_P5.Data.Repositories
                 .Include(c => c.YearOfProduction)
                 .FirstOrDefaultAsync(c => c.Id == carId);
         }
+
         public async Task AddCarAsync(Car car)
         {
             _context.Cars.Add(car);

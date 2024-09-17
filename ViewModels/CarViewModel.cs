@@ -17,11 +17,5 @@ namespace OC_P5.ViewModels
 
         [BindNever]
         public int YearOfProduction { get; set; }
-        [BindNever]
-        public string CarBrand { get; set; }
-        [BindNever]
-        public string CarModel { get; set; }
-        [BindNever]
-        public string? CarTrim { get; set; }
     }
 }

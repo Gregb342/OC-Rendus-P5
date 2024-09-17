@@ -1,4 +1,5 @@
-﻿using OC_P5.Data.Repositories.Interfaces;
+﻿using Humanizer;
+using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Models;
 using OC_P5.Services.Interfaces;
 using OC_P5.ViewModels;
@@ -23,9 +24,9 @@ namespace OC_P5.Services
                 Label = car.Label,
                 VIN = car.VIN,
                 Description = car.Description,
-                CarBrand = car.CarBrand.Brand,
-                CarModel = car.CarModel.Model,
-                CarTrim = car.CarTrim?.TrimLabel,
+                CarBrandId = car.CarBrand.Id,
+                CarModelId = car.CarModel.Id,
+                CarTrimId = car.CarTrim?.Id,
                 YearOfProduction = car.YearOfProduction.Year,
                 Status = car.Status
             });
@@ -40,9 +41,9 @@ namespace OC_P5.Services
                 Label = car.Label,
                 VIN = car.VIN,
                 Description = car.Description,
-                CarBrand = car.CarBrand.Brand,
-                CarModel = car.CarModel.Model,
-                CarTrim = car.CarTrim?.TrimLabel,
+                CarBrandId = car.CarBrand.Id,
+                CarModelId = car.CarModel.Id,
+                CarTrimId = car.CarTrim?.Id,
                 YearOfProduction = car.YearOfProduction.Year,
                 Status = car.Status
             };
@@ -62,19 +63,19 @@ namespace OC_P5.Services
             };
             await _carRepository.AddCarAsync(car);
         }
-        public async Task UpdateCarAsync(CarViewModel carViewModel)
+        public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {
-            Car car = new Car
-            {
-                Label = carViewModel.Label,
-                VIN = carViewModel.VIN,
-                Description = carViewModel.Description,
-                YearOfProductionId = carViewModel.YearOfProductionId,
-                CarBrandId = carViewModel.CarBrandId,
-                CarModelId = carViewModel.CarModelId,
-                CarTrimId = carViewModel.CarTrimId,
-                Status = carViewModel.Status
-            };
+            Car car = await _carRepository.GetCarByIdAsync(carId);
+
+            car.Label = carViewModel.Label;
+            car.VIN = carViewModel.VIN;
+            car.Description = carViewModel.Description;
+            car.YearOfProductionId = carViewModel.YearOfProductionId;
+            car.CarBrandId = carViewModel.CarBrandId;            
+            car.CarModelId = carViewModel.CarModelId;
+            car.CarTrimId = carViewModel.CarTrimId;
+            car.Status = carViewModel.Status;
+
             await _carRepository.UpdateCarAsync(car);
         }
 
