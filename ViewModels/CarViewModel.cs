@@ -17,5 +17,12 @@ namespace OC_P5.ViewModels
 
         [BindNever]
         public int YearOfProduction { get; set; }
+        // TODO : Régler le probleme de dependance fortes des noms de brand/model/trim dans le controller
+        //[BindNever]
+        //public string CarBrandName { get; set; }
+        //[BindNever]
+        //public string CarModelName { get; set; }
+        //[BindNever]
+        //public string CarTrimName { get; set; }
     }
 }

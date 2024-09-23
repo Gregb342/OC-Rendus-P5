@@ -25,6 +25,8 @@ namespace OC_P5
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ICarRepository, CarRepository>();
+            builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
+            builder.Services.AddScoped<ICarBrandRepository, CarBrandRepository>();
             builder.Services.AddScoped<ICarService, CarService>();
 
             var app = builder.Build();

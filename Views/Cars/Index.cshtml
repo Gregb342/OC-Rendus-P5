@@ -59,13 +59,13 @@
                     @Html.DisplayFor(modelItem => item.YearOfProduction)
                 </td>
                 <th>
-                    @ViewData["CarBrand"]
+                    @ViewData[$"CarBrand_{item.Id}"]
                 </th>
                 <th>
-                    @ViewData["CarModel"]
+                    @ViewData[$"CarModel_{item.Id}"]
                 </th>
                 <th>
-                    @ViewData["CarTrim"]
+                    @ViewData[$"CarTrim_{item.Id}"]
                 </th>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

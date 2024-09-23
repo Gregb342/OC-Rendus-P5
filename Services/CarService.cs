@@ -9,10 +9,14 @@ namespace OC_P5.Services
     public class CarService : ICarService
     {
         private readonly ICarRepository _carRepository;
+        private readonly ICarModelRepository _carModelRepository;
+        private readonly ICarBrandRepository _carBrandRepository;
 
-        public CarService(ICarRepository carRepository)
+        public CarService(ICarRepository carRepository, ICarModelRepository carModelRepository, ICarBrandRepository carBrandRepository)
         {
             _carRepository = carRepository;
+            _carModelRepository = carModelRepository;
+            _carBrandRepository = carBrandRepository;
         }
 
         public async Task<IEnumerable<CarViewModel>> GetAllCarsAsync()
@@ -50,6 +54,12 @@ namespace OC_P5.Services
         }
         public async Task AddCarAsync(CarViewModel carViewModel)
         {
+            CarModel carModel = await _carModelRepository.GetCarModelByIdAsync(carViewModel.CarModelId);
+            if (carModel is null || carModel.CarBrandId != carViewModel.CarBrandId)
+            {
+                throw new Exception("Le modèle sélectionné n'appartient pas à la marque choisie.");
+            }
+
             Car car = new Car
             {
                 Label = carViewModel.Label,
@@ -61,11 +71,16 @@ namespace OC_P5.Services
                 CarTrimId = carViewModel.CarTrimId,
                 Status = carViewModel.Status
             };
+
             await _carRepository.AddCarAsync(car);
         }
         public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {
             Car car = await _carRepository.GetCarByIdAsync(carId);
+            if (!await (ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId)))
+            {
+                throw new Exception("Le modèle sélectionné n'appartient pas à la marque choisie.");
+            }
 
             car.Label = carViewModel.Label;
             car.VIN = carViewModel.VIN;
@@ -84,8 +99,11 @@ namespace OC_P5.Services
             await _carRepository.DeleteCarAsync(carId);
         }
 
-
-
-
+        public async Task<bool> ValidateCarModelWithBrandAsync(int carModelId, int carBrandId)
+        {
+            CarModel carModel = await _carModelRepository.GetCarModelByIdAsync(carModelId);
+            if (carModel is not null && carModel.CarBrandId == carBrandId) { return true; }
+            return false;
+        }
     }
 }

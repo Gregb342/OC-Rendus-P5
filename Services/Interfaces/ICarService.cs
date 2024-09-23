@@ -9,5 +9,6 @@ namespace OC_P5.Services.Interfaces
         Task AddCarAsync(CarViewModel carViewModel);
         Task UpdateCarAsync(int carid, CarViewModel carViewModel);
         Task DeleteCarAsync(int carId);
+        Task<bool> ValidateCarModelWithBrandAsync(int carModelId, int carBrandId);
     }
 }

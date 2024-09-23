@@ -92,6 +92,15 @@ namespace OC_P5.Controllers
                 await _carService.AddCarAsync(carViewModel);
                 return RedirectToAction(nameof(Index));
             }
+
+            bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
+            // TODO : Resoudre le probleme de la correlation entre les noms de brand/model/trim dans le controller
+            if (!isModelValid)
+            {
+                ModelState.AddModelError("CarModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+                return View(carViewModel);
+            }
+
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", carViewModel.CarBrandId);
             ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", carViewModel.CarModelId);
             ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", carViewModel.CarTrimId);
@@ -197,5 +206,6 @@ namespace OC_P5.Controllers
         {
           return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
     }
 }
