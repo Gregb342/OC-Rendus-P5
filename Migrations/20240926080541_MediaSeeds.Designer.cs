@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OC_P5.Data;
 
@@ -11,9 +12,10 @@ using OC_P5.Data;
 namespace OC_P5.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240926080541_MediaSeeds")]
+    partial class MediaSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -931,70 +933,70 @@ namespace OC_P5.Migrations
                         {
                             Id = 1,
                             Label = "Car 1 Image",
-                            Path = "/medias/pictures/Car (1).jpg",
+                            Path = "medias/pictures/Car (1).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 2,
                             Label = "Car 2 Image",
-                            Path = "/medias/pictures/Car (2).jpg",
+                            Path = "medias/pictures/Car (2).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 3,
                             Label = "Car 3 Image",
-                            Path = "/medias/pictures/Car (3).jpg",
+                            Path = "medias/pictures/Car (3).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 4,
                             Label = "Car 4 Image",
-                            Path = "/medias/pictures/Car (4).jpg",
+                            Path = "medias/pictures/Car (4).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 5,
                             Label = "Car 5 Image",
-                            Path = "/medias/pictures/Car (5).jpg",
+                            Path = "medias/pictures/Car (5).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 6,
                             Label = "Car 6 Image",
-                            Path = "/medias/pictures/Car (6).jpg",
+                            Path = "medias/pictures/Car (6).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 7,
                             Label = "Car 7 Image",
-                            Path = "/medias/pictures/Car (7).jpg",
+                            Path = "medias/pictures/Car (7).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 8,
                             Label = "Car 8 Image",
-                            Path = "/medias/pictures/Car (8).jpg",
+                            Path = "medias/pictures/Car (8).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 9,
                             Label = "Car 9 Image",
-                            Path = "/medias/pictures/Car (9).jpg",
+                            Path = "medias/pictures/Car (9).jpg",
                             TypeOfMediaId = 1
                         },
                         new
                         {
                             Id = 10,
                             Label = "Car 10 Image",
-                            Path = "/medias/pictures/Car (10).jpg",
+                            Path = "medias/pictures/Car (10).jpg",
                             TypeOfMediaId = 1
                         });
                 });

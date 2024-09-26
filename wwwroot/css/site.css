@@ -14,5 +14,93 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #6b4f3f;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* Styling for the car item card */
+.car-item {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+    .car-item:hover {
+        transform: translateY(-10px);
+    }
+
+    /* Styling for the car image */
+    .car-item .card-img-top {
+        width: 100%;
+        height: auto;
+        border-bottom: 3px solid #ddd; /* optional divider */
+    }
+
+    /* Styling for the card body */
+    .car-item .card-body {
+        padding: 20px;
+        text-align: left;
+        background-color: #fafafa;
+    }
+
+    /* Styling for the card title (price section) */
+    .car-item .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;; /* Couleur de la maquette */
+        margin-bottom: 15px;
+    }
+
+    .car-item .card-img-top {
+        width: 100%; /* La largeur du conteneur de l'image */
+        height: 316px; /* Hauteur fixe */
+        object-fit: cover; /* Recadre l'image pour qu'elle remplisse le conteneur sans la déformer */
+        object-position: center; /* Centre l'image à l'intérieur du conteneur */
+    }
+
+
+
+.car-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .car-details li {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+.btn-add-car {
+    display: inline-block;
+    background-color: #D9A963;
+    ;
+    color: #fff;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+    .btn-add-car:hover {
+        background-color: #b58355;
+    }
+
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }

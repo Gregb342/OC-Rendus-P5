@@ -27,6 +27,11 @@ namespace OC_P5
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
             builder.Services.AddScoped<ICarBrandRepository, CarBrandRepository>();
+            builder.Services.AddScoped<ICarTrimRepository, CarTrimRepository>();
+            builder.Services.AddScoped<IMediaRepository, MediaRepository>();
+            builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            builder.Services.AddScoped<IRepairRepository, RepairRepository>();
+            builder.Services.AddScoped<ISaleRepository, SaleRepository>();
             builder.Services.AddScoped<ICarService, CarService>();
 
             var app = builder.Build();
@@ -53,7 +58,7 @@ namespace OC_P5
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Cars}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             app.Run();

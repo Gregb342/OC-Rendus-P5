@@ -39,6 +39,15 @@ namespace OC_P5.Controllers
                 ViewData[$"CarBrand_{car.Id}"] = _context.CarBrands.FirstOrDefault(b => b.Id == car.CarBrandId)?.Brand;
                 ViewData[$"CarModel_{car.Id}"] = _context.CarModels.FirstOrDefault(m => m.Id == car.CarModelId)?.Model;
                 ViewData[$"CarTrim_{car.Id}"] = _context.CarTrims.FirstOrDefault(t => t.Id == car.CarTrimId)?.TrimLabel;
+
+                var media = await _carService.GetCarMediaAsync(car.Id);
+
+                if (media is not null && media.Any())
+                {
+                    var firstMedia = media.FirstOrDefault();
+                    ViewData[$"MediaPath_{car.Id}"] = firstMedia?.Path;
+                    ViewData[$"MediaLabel_{car.Id}"] = firstMedia?.Label;
+                }
             }
             return View(cars);
         }
@@ -68,6 +77,17 @@ namespace OC_P5.Controllers
             ViewData["CarBrand"] = carBrand?.Brand;
             ViewData["CarModel"] = carModel?.Model;
             ViewData["CarTrim"] = carTrim?.TrimLabel;
+
+            var media = await _carService.GetCarMediaAsync(car.Id);
+
+            if (media is not null && media.Any())
+            {
+                var firstMedia = media.FirstOrDefault();
+                ViewData["MediaPath"] = firstMedia?.Path;
+                ViewData["MediaLabel"] = firstMedia?.Label;
+            }
+
+                ViewData["Media"] = media;
 
             return View(car);
         }

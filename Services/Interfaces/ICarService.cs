@@ -1,4 +1,5 @@
-﻿using OC_P5.ViewModels;
+﻿using OC_P5.Models;
+using OC_P5.ViewModels;
 
 namespace OC_P5.Services.Interfaces
 {
@@ -10,5 +11,6 @@ namespace OC_P5.Services.Interfaces
         Task UpdateCarAsync(int carid, CarViewModel carViewModel);
         Task DeleteCarAsync(int carId);
         Task<bool> ValidateCarModelWithBrandAsync(int carModelId, int carBrandId);
+        Task<IEnumerable<Media>> GetCarMediaAsync(int carId);
     }
 }

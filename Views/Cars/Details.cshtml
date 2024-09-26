@@ -1,66 +1,45 @@
 ﻿@model OC_P5.ViewModels.CarViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails de la voiture";
 }
 
-<h1>Details</h1>
+<div class="container my-5">
+    <!-- Bouton Retour -->
+    <div class="mb-3">
+        <a asp-action="Index" class="text-muted"><i class="bi bi-arrow-left"></i> Retour</a>
+    </div>
 
-<div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Label)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Label)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VIN)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VIN)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearOfProduction)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearOfProduction)
-        </dd>
-        <dt class="col-sm-2">
-            @ViewData["CarBrandColumn"]
-        </dt>
-        <dd class="col-sm-10">
-            @ViewData["CarBrand"]
-        </dd>
-        <dt class="col-sm-2">
-            @ViewData["CarModelColumn"]
-        </dt>
-        <dd class="col-sm-10">
-            @ViewData["CarModel"]
-        </dd>
-        <dt class="col-sm-2">
-            @ViewData["CarTrimColumn"]
-        </dt>
-        <dd class="col-sm-10">
-            @ViewData["CarTrim"]
-        </dd>
-    </dl>
+    <!-- Détails de la voiture -->
+    <div class="row">
+        <!-- Image de la voiture -->
+        <div class="col-md-6">
+            <img src="@ViewData["MediaPath"]" alt="@ViewData["MediaLabel"]" class="img-fluid rounded" />
+        </div>
+
+        <!-- Informations de la voiture -->
+        <div class="col-md-6">
+            <h3 class="mb-4">Prix de vente</h3>
+
+            <dl class="row">
+                <dt class="col-sm-3 text-muted">Année</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.YearOfProduction)</dd>
+
+                <dt class="col-sm-3 text-muted">Marque</dt>
+                <dd class="col-sm-9">@ViewData["CarBrand"]</dd>
+
+                <dt class="col-sm-3 text-muted">Modèle</dt>
+                <dd class="col-sm-9">@ViewData["CarModel"]</dd>
+
+                <dt class="col-sm-3 text-muted">Finition</dt>
+                <dd class="col-sm-9">@ViewData["CarTrim"]</dd>
+            </dl>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,64 +2,82 @@
 @Html.ValidationSummary(true)
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ajouter une voiture";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <h2 class="text-center my-5">Ajouter une voiture</h2>
+    <p class="text-center text-muted">tous les champs sont obligatoires</p>
 
-<h4>Car</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Label" class="control-label"></label>
-                <input asp-for="Label" class="form-control" />
-                <span asp-validation-for="Label" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VIN" class="control-label"></label>
-                <input asp-for="VIN" class="form-control" />
-                <span asp-validation-for="VIN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfProductionId" class="control-label"></label>
-                <select asp-for="YearOfProductionId" class ="form-control" asp-items="ViewBag.YearOfProductionId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarBrandId" class="control-label"></label>
-                <select asp-for="CarBrandId" class ="form-control" asp-items="ViewBag.CarBrandId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarModelId" class="control-label"></label>
-                <select asp-for="CarModelId" class ="form-control" asp-items="ViewBag.CarModelId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarTrimId" class="control-label"></label>
-                <select asp-for="CarTrimId" class ="form-control" asp-items="ViewBag.CarTrimId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<CarStatus>()"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Label" class="form-label"></label>
+                    <input asp-for="Label" class="form-control" />
+                    <span asp-validation-for="Label" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="VIN" class="form-label"></label>
+                    <input asp-for="VIN" class="form-control" />
+                    <span asp-validation-for="VIN" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="YearOfProductionId" class="form-label"></label>
+                    <select asp-for="YearOfProductionId" class="form-select" asp-items="ViewBag.YearOfProductionId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CarBrandId" class="form-label"></label>
+                    <select asp-for="CarBrandId" class="form-select" asp-items="ViewBag.CarBrandId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CarModelId" class="form-label"></label>
+                    <select asp-for="CarModelId" class="form-select" asp-items="ViewBag.CarModelId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CarTrimId" class="form-label"></label>
+                    <select asp-for="CarTrimId" class="form-select" asp-items="ViewBag.CarTrimId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<CarStatus>()"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <!-- File input for visual -->
+                <div class="mb-3">
+                    <label for="Visual" class="form-label">Visuel</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-plus"></i></span>
+                        <input type="file" class="form-control" id="Visual" />
+                    </div>
+                    <small class="text-muted">Ajoutez une image</small>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-warning btn-lg">Publier</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
