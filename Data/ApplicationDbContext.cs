@@ -64,6 +64,9 @@ namespace OC_P5.Data
             CarSeed.Seed(modelBuilder);
             CarMediaSeed.Seed(modelBuilder);
             MediaSeed.Seed(modelBuilder);
+            PurchaseSeed.Seed(modelBuilder);
+            RepairSeed.Seed(modelBuilder);
+            SaleSeed.Seed(modelBuilder);
             #endregion
 
         }
