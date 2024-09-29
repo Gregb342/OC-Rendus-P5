@@ -57,7 +57,7 @@ namespace OC_P5.Services
                 Status = car.Status
             };
         }
-        public async Task AddCarAsync(CarViewModel carViewModel)
+        public async Task<Car> AddCarAsync(CarViewModel carViewModel)
         {
             CarModel carModel = await _carModelRepository.GetCarModelByIdAsync(carViewModel.CarModelId);
             if (carModel is null || carModel.CarBrandId != carViewModel.CarBrandId)
@@ -74,10 +74,11 @@ namespace OC_P5.Services
                 CarBrandId = carViewModel.CarBrandId,
                 CarModelId = carViewModel.CarModelId,
                 CarTrimId = carViewModel.CarTrimId,
-                Status = carViewModel.Status
+                Status = CarStatus.Purchased
             };
 
             await _carRepository.AddCarAsync(car);
+            return car;
         }
         public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {

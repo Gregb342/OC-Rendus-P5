@@ -52,13 +52,18 @@
                     <select asp-for="CarTrimId" class="form-select" asp-items="ViewBag.CarTrimId"></select>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Status" class="form-label"></label>
-                    <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<CarStatus>()"></select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="PurchaseDate" class="control-label"></label>
+                    <input asp-for="PurchaseDate" class="form-control" type="date" />
+                    <span asp-validation-for="PurchaseDate" class="text-danger"></span>
                 </div>
 
-                <!-- File input for visual -->
+                <div class="form-group">
+                    <label asp-for="PurchasePrice" class="control-label"></label>
+                    <input asp-for="PurchasePrice" class="form-control" />
+                    <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                </div>
+
                 <div class="mb-3">
                     <label for="Visual" class="form-label">Visuel</label>
                     <div class="input-group">

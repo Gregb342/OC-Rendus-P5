@@ -22,6 +22,10 @@ namespace OC_P5.Data.Repositories
         {
             return await _context.Purchases.FirstOrDefaultAsync(p => p.Id == purchaseId);
         }
+        public async Task<Purchase> GetPurchaseByCarIdAsync(int carId)
+        {
+            return await _context.Purchases.FirstOrDefaultAsync(p => p.CarId == carId);
+        }
 
         public async Task AddPurchaseAsync(Purchase purchase)
         {

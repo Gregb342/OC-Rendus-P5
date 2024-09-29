@@ -15,6 +15,9 @@ namespace OC_P5.ViewModels
         public int? CarTrimId { get; set; }
         public CarStatus Status { get; set; }
 
+        public DateTime? PurchaseDate { get; set; }
+        public decimal? PurchasePrice { get; set; }
+
         [BindNever]
         public int YearOfProduction { get; set; }
         // TODO : Régler le probleme de dependance fortes des noms de brand/model/trim dans le controller

@@ -17,12 +17,14 @@ namespace OC_P5.Controllers
     public class CarsController : Controller
     {
         private readonly ICarService _carService;
+        private readonly IPurchaseService _purchaseService;
         private readonly ApplicationDbContext _context;
 
-        public CarsController(ICarService carService,ApplicationDbContext context)
+        public CarsController(ICarService carService, IPurchaseService purchaseService, ApplicationDbContext context)
         {
-            _carService = carService;
             _context = context;
+            _carService = carService;
+            _purchaseService = purchaseService;
         }
 
         // GET: Cars
@@ -66,6 +68,13 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
+            var purchase = await _purchaseService.GetPurchaseByCarIdAsync(car.Id);
+            if (purchase != null)
+            {
+                ViewData["PurchaseDate"] = purchase.PurchaseDate;
+                ViewData["PurchasePrice"] = purchase.PurchasePrice;
+            }
+
             ViewData["CarBrandColumn"] = "Car Brand";
             ViewData["CarModelColumn"] = "Car Model";
             ViewData["CarTrimColumn"] = "Car Trim";
@@ -105,11 +114,21 @@ namespace OC_P5.Controllers
         // POST: Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status")] CarViewModel carViewModel)
+        public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice")] CarViewModel carViewModel)
         {
             if (ModelState.IsValid)
             {
-                await _carService.AddCarAsync(carViewModel);
+                Car car = await _carService.AddCarAsync(carViewModel);
+
+                Purchase purchase = new Purchase
+                {
+                    CarId = car.Id,
+                    PurchaseDate = carViewModel.PurchaseDate ?? DateTime.Now,  
+                    PurchasePrice = carViewModel.PurchasePrice ?? 0
+                };
+
+                await _purchaseService.AddPurchaseAsync(purchase);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -151,7 +170,7 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice")] CarViewModel car)
         {
             if (id != car.Id)
             {
@@ -163,6 +182,7 @@ namespace OC_P5.Controllers
                 try
                 {
                     await _carService.UpdateCarAsync(id, car);
+                    await _purchaseService.UpdatePurchaseAsync(id, car);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

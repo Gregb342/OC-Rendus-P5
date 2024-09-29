@@ -6,6 +6,7 @@ namespace OC_P5.Data.Repositories.Interfaces
     {
         Task<IEnumerable<Purchase>> GetAllPurchasesAsync();
         Task<Purchase> GetPurchaseByIdAsync(int purchaseId);
+        Task<Purchase> GetPurchaseByCarIdAsync(int carId);
         Task AddPurchaseAsync(Purchase purchase);
         Task UpdatePurchaseAsync(Purchase purchase);
         Task DeletePurchaseAsync(int purchaseId);
