@@ -40,6 +40,18 @@
                 <dt class="col-sm-3 text-muted">Date d'achat :</dt>
                 <dd class="col-sm-9">@ViewData["PurchaseDate"]</dd>
 
+                @if (ViewData["RepairDate"] != null || ViewData["RepairCost"] != null)
+                {
+                    <dt class="col-sm-3 text-muted">Date de la réparation :</dt>
+                    <dd class="col-sm-9">@ViewData["RepairDate"]</dd>
+
+                    <dt class="col-sm-3 text-muted">Description de la réparation :</dt>
+                    <dd class="col-sm-9">@ViewData["RepairDescription"]</dd>
+
+                    <dt class="col-sm-3 text-muted">Prix de la réparation :</dt>
+                    <dd class="col-sm-9">@ViewData["RepairPrice"]</dd>
+                }
+
             </dl>
         </div>
     </div>

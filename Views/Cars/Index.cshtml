@@ -14,23 +14,26 @@
     <div class="car-grid">
         @foreach (var item in Model)
         {
-            <div class="card car-item">
-                <img src="@ViewData[$"MediaPath_{item.Id}"]" alt="@ViewData[$"MediaLabel_{item.Id}"]" class="card-img-top" />
-                <div class="card-body">
-                    <h5 class="card-title">Prix de vente</h5>
-                    <ul class="car-details">
-                        <li><strong>Année :</strong> @Html.DisplayFor(modelItem => item.YearOfProduction)</li>
-                        <li><strong>Marque :</strong> @ViewData[$"CarBrand_{item.Id}"]</li>
-                        <li><strong>Modèle :</strong> @ViewData[$"CarModel_{item.Id}"]</li>
-                        <li><strong>Finition :</strong> @ViewData[$"CarTrim_{item.Id}"]</li>
-                    </ul>
-                    <div class="d-flex justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Modifier</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Détails</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
+            @if (item.Status == CarStatus.Available)
+            {
+                <div class="card car-item">
+                    <img src="@ViewData[$"MediaPath_{item.Id}"]" alt="@ViewData[$"MediaLabel_{item.Id}"]" class="card-img-top" />
+                    <div class="card-body">
+                        <h5 class="card-title">Prix de vente</h5>
+                        <ul class="car-details">
+                            <li><strong>Année :</strong> @Html.DisplayFor(modelItem => item.YearOfProduction)</li>
+                            <li><strong>Marque :</strong> @ViewData[$"CarBrand_{item.Id}"]</li>
+                            <li><strong>Modèle :</strong> @ViewData[$"CarModel_{item.Id}"]</li>
+                            <li><strong>Finition :</strong> @ViewData[$"CarTrim_{item.Id}"]</li>
+                        </ul>
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Modifier</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Détails</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>

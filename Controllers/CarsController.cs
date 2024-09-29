@@ -18,13 +18,18 @@ namespace OC_P5.Controllers
     {
         private readonly ICarService _carService;
         private readonly IPurchaseService _purchaseService;
+        private readonly IRepairService _repairService;
         private readonly ApplicationDbContext _context;
 
-        public CarsController(ICarService carService, IPurchaseService purchaseService, ApplicationDbContext context)
+        public CarsController(ICarService carService, 
+                              IPurchaseService purchaseService,
+                              IRepairService repairService,
+                              ApplicationDbContext context)
         {
             _context = context;
             _carService = carService;
             _purchaseService = purchaseService;
+            _repairService = repairService;
         }
 
         // GET: Cars
@@ -68,11 +73,19 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
-            var purchase = await _purchaseService.GetPurchaseByCarIdAsync(car.Id);
+            Purchase purchase = await _purchaseService.GetPurchaseByCarIdAsync(car.Id);
             if (purchase != null)
             {
                 ViewData["PurchaseDate"] = purchase.PurchaseDate;
                 ViewData["PurchasePrice"] = purchase.PurchasePrice;
+            }
+
+            Repair repair = await _repairService.GetRepairByCarIdAsync(car.Id);
+            if (repair != null)
+            {
+                ViewData["RepairDate"] = repair.RepairDate;
+                ViewData["RepairCost"] = repair.RepairCost;
+                ViewData["RepairDescription"] = repair.Description;
             }
 
             ViewData["CarBrandColumn"] = "Car Brand";
@@ -156,6 +169,12 @@ namespace OC_P5.Controllers
             }
 
             CarViewModel car = await _carService.GetCarByIdAsync(id.Value);
+            car.PurchaseDate = (await _purchaseService.GetPurchaseByCarIdAsync(id.Value))?.PurchaseDate;
+            car.PurchasePrice = (await _purchaseService.GetPurchaseByCarIdAsync(id.Value))?.PurchasePrice;
+            car.RepairDate = (await _repairService.GetRepairByCarIdAsync(id.Value))?.RepairDate;
+            car.RepairCost = (await _repairService.GetRepairByCarIdAsync(id.Value))?.RepairCost;
+            car.RepairDescription = (await _repairService.GetRepairByCarIdAsync(id.Value))?.Description;
+
             if (car is null)
             {
                 return NotFound();
@@ -170,7 +189,7 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost")] CarViewModel car)
         {
             if (id != car.Id)
             {
@@ -183,6 +202,18 @@ namespace OC_P5.Controllers
                 {
                     await _carService.UpdateCarAsync(id, car);
                     await _purchaseService.UpdatePurchaseAsync(id, car);
+                    if (car.RepairCost is not null && car.RepairDate is not null)
+                    {
+                        Repair repair = new Repair
+                        {
+                            CarId = car.Id,
+                            RepairDate = car.RepairDate ?? DateTime.Now,
+                            RepairCost = car.RepairCost ?? 0,
+                            Description = car.RepairDescription ?? string.Empty
+                        };
+                        await _repairService.UpdateRepairAsync(id, car);
+                        car.Status = CarStatus.Available;
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {

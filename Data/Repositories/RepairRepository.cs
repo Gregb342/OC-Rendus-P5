@@ -23,6 +23,11 @@ namespace OC_P5.Data.Repositories
             return await _context.Repairs.FirstOrDefaultAsync(p => p.Id == RepairId);
         }
 
+        public async Task<Repair> GetRepairByCarIdAsync(int carId)
+        {
+            return await _context.Repairs.FirstOrDefaultAsync(p => p.CarId == carId);
+        }   
+
         public async Task AddRepairAsync(Repair Repair)
         {
             _context.Repairs.Add(Repair);

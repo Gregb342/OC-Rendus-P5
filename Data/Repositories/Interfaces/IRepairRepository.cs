@@ -6,6 +6,7 @@ namespace OC_P5.Data.Repositories.Interfaces
     {
         Task<IEnumerable<Repair>> GetAllRepairsAsync();
         Task<Repair> GetRepairByIdAsync(int repairId);
+        Task<Repair> GetRepairByCarIdAsync(int carId);
         Task AddRepairAsync(Repair repair);
         Task UpdateRepairAsync(Repair repair);
         Task DeleteRepairAsync(int repairId);
