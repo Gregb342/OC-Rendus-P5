@@ -14,12 +14,12 @@
     <div class="car-grid">
         @foreach (var item in Model)
         {
-            @if (item.Status == CarStatus.Available)
+            @if (item.Status == CarStatus.Available || item.Status == CarStatus.Sold)
             {
                 <div class="card car-item">
                     <img src="@ViewData[$"MediaPath_{item.Id}"]" alt="@ViewData[$"MediaLabel_{item.Id}"]" class="card-img-top" />
                     <div class="card-body">
-                        <h5 class="card-title">Prix de vente</h5>
+                        <h5 class="card-title">@item.Label</h5>
                         <ul class="car-details">
                             <li><strong>Année :</strong> @Html.DisplayFor(modelItem => item.YearOfProduction)</li>
                             <li><strong>Marque :</strong> @ViewData[$"CarBrand_{item.Id}"]</li>

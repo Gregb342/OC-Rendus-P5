@@ -35,6 +35,7 @@ namespace OC_P5
             builder.Services.AddScoped<ICarService, CarService>();
             builder.Services.AddScoped<IPurchaseService, PurchaseService>();
             builder.Services.AddScoped<IRepairService, RepairService>();
+            builder.Services.AddScoped<ISaleService, SaleService>();
 
             var app = builder.Build();
 

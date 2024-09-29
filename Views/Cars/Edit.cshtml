@@ -86,6 +86,21 @@
                     <span asp-validation-for="RepairCost" class="text-danger"></span>
                 </div>
 
+                <hr />
+                <p>La voiture a-t-elle été vendue ?</p>
+
+                <div class="form-group">
+                    <label asp-for="SaleDate" class="control-label"></label>
+                    <input asp-for="SaleDate" class="form-control" type="date" />
+                    <span asp-validation-for="SaleDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SalePrice" class="control-label"></label>
+                    <input asp-for="SalePrice" class="form-control" />
+                    <span asp-validation-for="SalePrice" class="text-danger"></span>
+                </div>
+
                 <div class="mb-3">
                     <label for="Visual" class="form-label">Visuel</label>
                     <div class="input-group">

@@ -19,17 +19,20 @@ namespace OC_P5.Controllers
         private readonly ICarService _carService;
         private readonly IPurchaseService _purchaseService;
         private readonly IRepairService _repairService;
+        private readonly ISaleService _saleService;
         private readonly ApplicationDbContext _context;
 
         public CarsController(ICarService carService, 
                               IPurchaseService purchaseService,
                               IRepairService repairService,
+                              ISaleService saleService,
                               ApplicationDbContext context)
         {
             _context = context;
             _carService = carService;
             _purchaseService = purchaseService;
             _repairService = repairService;
+            _saleService = saleService;
         }
 
         // GET: Cars
@@ -174,6 +177,8 @@ namespace OC_P5.Controllers
             car.RepairDate = (await _repairService.GetRepairByCarIdAsync(id.Value))?.RepairDate;
             car.RepairCost = (await _repairService.GetRepairByCarIdAsync(id.Value))?.RepairCost;
             car.RepairDescription = (await _repairService.GetRepairByCarIdAsync(id.Value))?.Description;
+            car.SalePrice = (await _saleService.GetSaleByCarIdAsync(id.Value))?.SalePrice;
+            car.SaleDate = (await _saleService.GetSaleByCarIdAsync(id.Value))?.SaleDate;
 
             if (car is null)
             {
@@ -189,7 +194,7 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost, SaleDate, SalePrice")] CarViewModel car)
         {
             if (id != car.Id)
             {
@@ -213,6 +218,17 @@ namespace OC_P5.Controllers
                         };
                         await _repairService.UpdateRepairAsync(id, car);
                         car.Status = CarStatus.Available;
+                    }
+                    if (car.SalePrice is not null && car.SaleDate is not null)
+                    {
+                        Sale sale = new Sale
+                        {
+                            CarId = car.Id,
+                            SaleDate = car.SaleDate ?? DateTime.Now,
+                            SalePrice = car.SalePrice ?? 0
+                        };
+                        await _saleService.UpdateSaleAsync(id, car);
+                        car.Status = CarStatus.Sold;
                     }
                 }
                 catch (DbUpdateConcurrencyException)

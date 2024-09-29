@@ -21,6 +21,8 @@ namespace OC_P5.ViewModels
         public string? RepairDescription { get; set; }
         public DateTime? RepairDate { get; set; }
         public decimal? RepairCost { get; set; }
+        public DateTime? SaleDate { get; set; }
+        public decimal? SalePrice { get; set; }
 
         [BindNever]
         public int YearOfProduction { get; set; }

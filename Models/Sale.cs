@@ -7,9 +7,7 @@ namespace OC_P5.Models
     {
         public int Id { get; set; }
         public int CarId { get; set; }
-        public DateTime SaleDate { get; set; }
-
-        
+        public DateTime SaleDate { get; set; }        
         public decimal SalePrice { get; set; }
 
         [Required]

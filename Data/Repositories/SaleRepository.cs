@@ -23,6 +23,11 @@ namespace OC_P5.Data.Repositories
             return await _context.Sales.FirstOrDefaultAsync(p => p.Id == SaleId);
         }
 
+        public async Task<Sale> GetSaleByCarIdAsync(int carId)
+        {
+            return await _context.Sales.FirstOrDefaultAsync(p => p.CarId == carId);
+        }
+
         public async Task AddSaleAsync(Sale Sale)
         {
             _context.Sales.Add(Sale);
