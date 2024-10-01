@@ -13,6 +13,7 @@ namespace OC_P5.Data
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<CarTrim> CarTrims { get; set; }
         public DbSet<CarModelCarTrim> CarModelCarTrims { get; set; }
+        public DbSet<Media> Medias { get; set; }
         public DbSet<CarMedia> CarMedias { get; set; }
         public DbSet<TypeOfMedia> TypeOfMedias { get; set; }
         public DbSet<Purchase> Purchases { get; set; }

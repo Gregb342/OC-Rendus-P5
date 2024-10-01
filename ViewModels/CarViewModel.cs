@@ -23,6 +23,7 @@ namespace OC_P5.ViewModels
         public decimal? RepairCost { get; set; }
         public DateTime? SaleDate { get; set; }
         public decimal? SalePrice { get; set; }
+        public List<IFormFile>? MediaFiles { get; set; }
 
         [BindNever]
         public int YearOfProduction { get; set; }

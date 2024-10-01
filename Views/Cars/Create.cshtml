@@ -65,12 +65,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="Visual" class="form-label">Visuel</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-plus"></i></span>
-                        <input type="file" class="form-control" id="Visual" />
-                    </div>
-                    <small class="text-muted">Ajoutez une image</small>
+                    <label for="MediaFiles" class="form-label">Ajoutez des images</label>
+                    <input type="file" asp-for="MediaFiles" multiple class="form-control" />
+                    <span asp-validation-for="MediaFiles" class="text-danger"></span>
+                    <small class="text-muted">Sélectionnez plusieurs fichiers d'images (jpg, png, etc.)</small>
                 </div>
 
                 <div class="text-center">

@@ -20,12 +20,14 @@ namespace OC_P5.Controllers
         private readonly IPurchaseService _purchaseService;
         private readonly IRepairService _repairService;
         private readonly ISaleService _saleService;
+        private readonly IMediaService _mediaService;
         private readonly ApplicationDbContext _context;
 
         public CarsController(ICarService carService, 
                               IPurchaseService purchaseService,
                               IRepairService repairService,
                               ISaleService saleService,
+                              IMediaService mediaService,
                               ApplicationDbContext context)
         {
             _context = context;
@@ -33,6 +35,7 @@ namespace OC_P5.Controllers
             _purchaseService = purchaseService;
             _repairService = repairService;
             _saleService = saleService;
+            _mediaService = mediaService;
         }
 
         // GET: Cars
@@ -130,7 +133,7 @@ namespace OC_P5.Controllers
         // POST: Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice")] CarViewModel carViewModel)
+        public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,MediaFiles")] CarViewModel carViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -139,29 +142,59 @@ namespace OC_P5.Controllers
                 Purchase purchase = new Purchase
                 {
                     CarId = car.Id,
-                    PurchaseDate = carViewModel.PurchaseDate ?? DateTime.Now,  
+                    PurchaseDate = carViewModel.PurchaseDate ?? DateTime.Now,
                     PurchasePrice = carViewModel.PurchasePrice ?? 0
                 };
-
                 await _purchaseService.AddPurchaseAsync(purchase);
+
+                // Traitement des fichiers images
+                if (carViewModel.MediaFiles != null && carViewModel.MediaFiles.Count > 0)
+                {
+                    foreach (var file in carViewModel.MediaFiles)
+                    {
+                        if (file.Length > 0)
+                        {
+                            // Sauvegarde du fichier dans le répertoire "wwwroot/medias/pictures"
+                            var filePath = Path.Combine("wwwroot/medias/pictures", file.FileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+
+                            // Création d'un objet Media pour l'associer à la voiture
+                            Media media = new Media
+                            {
+                                Path = file.FileName, // Chemin relatif
+                                Label = Path.GetFileNameWithoutExtension(file.FileName)
+                            };
+
+                            // Ajout à la relation CarMedia
+                            await _mediaService.AddMediaToCarAsync(car.Id, media);
+                        }
+                    }
+                }
 
                 return RedirectToAction(nameof(Index));
             }
 
+            // En cas d'erreur dans le formulaire
             bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
-            // TODO : Resoudre le probleme de la correlation entre les noms de brand/model/trim dans le controller
             if (!isModelValid)
             {
                 ModelState.AddModelError("CarModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
                 return View(carViewModel);
             }
 
+            // Récupération des données pour la liste déroulante en cas de réaffichage de la vue
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", carViewModel.CarBrandId);
             ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", carViewModel.CarModelId);
             ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", carViewModel.CarTrimId);
             ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year", carViewModel.YearOfProductionId);
+
             return View(carViewModel);
         }
+
 
         // GET: Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)

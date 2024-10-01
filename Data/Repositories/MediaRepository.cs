@@ -20,5 +20,11 @@ namespace OC_P5.Data.Repositories
                 .Select(cm => cm.Media)
                 .ToListAsync();
         }
+
+        public async Task AddMediaAsync(Media media)
+        {
+            _context.Medias.Add(media);
+            await _context.SaveChangesAsync();
+        }
     }
 }
