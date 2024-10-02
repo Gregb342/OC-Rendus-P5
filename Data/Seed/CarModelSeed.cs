@@ -10,7 +10,7 @@ namespace OC_P5.Data.Seed
             modelBuilder.Entity<CarModel>().HasData(
                 new CarModel { Id = 1, Model = "107", CarBrandId = 7},
                 new CarModel { Id = 2, Model = "208", CarBrandId = 7},
-                new CarModel { Id = 3, Model = "3008", CarBrandId = 7},
+                new CarModel { Id = 3, Model = "3008", CarBrandId = 7},                
                 new CarModel { Id = 4, Model = "A3", CarBrandId = 1},
                 new CarModel { Id = 5, Model = "A4", CarBrandId = 1},
                 new CarModel { Id = 6, Model = "Q5", CarBrandId = 1},
@@ -34,7 +34,10 @@ namespace OC_P5.Data.Seed
                 new CarModel { Id = 24, Model = "RAV4", CarBrandId = 9},
                 new CarModel { Id = 25, Model = "Golf", CarBrandId = 10},
                 new CarModel { Id = 26, Model = "Passat", CarBrandId = 10},
-                new CarModel { Id = 27, Model = "Tiguan", CarBrandId = 10}
+                new CarModel { Id = 27, Model = "Tiguan", CarBrandId = 10},
+                new CarModel { Id = 28, Model = "C3", CarBrandId = 3 },
+                new CarModel { Id = 29, Model = "C4", CarBrandId = 3 },
+                    new CarModel { Id = 30, Model = "C5", CarBrandId = 3 }
             );
         }
     }

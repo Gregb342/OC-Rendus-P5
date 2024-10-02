@@ -6,5 +6,6 @@ namespace OC_P5.Data.Repositories.Interfaces
     {
         Task<IEnumerable<Media>> GetMediaByCarAsync(int carId);
         Task AddMediaAsync(Media media);
+        Task RemoveMediaAsync(int mediaId);
     }
 }

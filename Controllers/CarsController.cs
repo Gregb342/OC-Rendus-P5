@@ -150,33 +150,18 @@ namespace OC_P5.Controllers
                 // Traitement des fichiers images
                 if (carViewModel.MediaFiles != null && carViewModel.MediaFiles.Count > 0)
                 {
-                    foreach (var file in carViewModel.MediaFiles)
+                    try
                     {
-                        if (file.Length > 0)
-                        {
-                            // Sauvegarde du fichier dans le répertoire "wwwroot/medias/pictures"
-                            var filePath = Path.Combine("wwwroot/medias/pictures", file.FileName);
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await file.CopyToAsync(stream);
-                            }
-
-                            // Création d'un objet Media pour l'associer à la voiture
-                            Media media = new Media
-                            {
-                                Path = file.FileName, // Chemin relatif
-                                Label = Path.GetFileNameWithoutExtension(file.FileName)
-                            };
-
-                            // Ajout à la relation CarMedia
-                            await _mediaService.AddMediaToCarAsync(car.Id, media);
-                        }
+                        await _mediaService.ProcessMediaFilesAsync(car.Id, carViewModel.MediaFiles);
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        ModelState.AddModelError("MediaFiles", ex.Message);
+                        return View(carViewModel);
                     }
                 }
-
-                return RedirectToAction(nameof(Index));
-            }
+            }                
 
             // En cas d'erreur dans le formulaire
             bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
@@ -186,7 +171,6 @@ namespace OC_P5.Controllers
                 return View(carViewModel);
             }
 
-            // Récupération des données pour la liste déroulante en cas de réaffichage de la vue
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", carViewModel.CarBrandId);
             ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", carViewModel.CarModelId);
             ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", carViewModel.CarTrimId);
@@ -194,7 +178,6 @@ namespace OC_P5.Controllers
 
             return View(carViewModel);
         }
-
 
         // GET: Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -227,7 +210,7 @@ namespace OC_P5.Controllers
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost, SaleDate, SalePrice")] CarViewModel car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost, SaleDate, SalePrice, MediaFiles")] CarViewModel car)
         {
             if (id != car.Id)
             {
@@ -262,6 +245,15 @@ namespace OC_P5.Controllers
                         };
                         await _saleService.UpdateSaleAsync(id, car);
                         car.Status = CarStatus.Sold;
+                    }
+                    try
+                    {
+                        await _mediaService.UpdateMediaFilesAsync(car.Id, car.MediaFiles);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        ModelState.AddModelError("MediaFiles", ex.Message);
+                        return View(car);
                     }
                 }
                 catch (DbUpdateConcurrencyException)

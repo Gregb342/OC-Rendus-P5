@@ -26,5 +26,15 @@ namespace OC_P5.Data.Repositories
             _context.Medias.Add(media);
             await _context.SaveChangesAsync();
         }
+
+        public async Task RemoveMediaAsync(int mediaId)
+        {
+            Media media = await _context.Medias.FindAsync(mediaId);
+            if (media is not null)
+            {
+                _context.Medias.Remove(media);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

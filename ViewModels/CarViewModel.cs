@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OC_P5.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OC_P5.ViewModels
 {
