@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using OC_P5.Data.Repositories;
 using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Models;
 using OC_P5.Services.Interfaces;
@@ -80,6 +81,11 @@ namespace OC_P5.Services
             await _carRepository.AddCarAsync(car);
             return car;
         }
+
+        public async Task<IEnumerable<CarModel>> GetCarModelByBrandIdAsync(int brandId)
+        {
+           return await _carModelRepository.GetCarModelsByBrandIdAsync(brandId);
+        }
         public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {
             Car car = await _carRepository.GetCarByIdAsync(carId);
@@ -115,6 +121,20 @@ namespace OC_P5.Services
         public async Task<IEnumerable<Media>> GetCarMediaAsync(int carId)
         {
             return await _mediaRepository.GetMediaByCarAsync(carId);
+        }
+
+        public async Task<CarBrand> AddNewBrandAsync(string brandName)
+        {
+            CarBrand existingBrand = await _carBrandRepository.GetCarBrandByNameAsync(brandName);
+            if (existingBrand != null)
+            {
+                throw new InvalidOperationException("Cette marque existe déjà.");
+            }
+
+            CarBrand newBrand = new CarBrand { Brand = brandName };
+            await _carBrandRepository.AddCarBrandAsync(newBrand);
+
+            return newBrand;
         }
     }
 }

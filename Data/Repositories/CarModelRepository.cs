@@ -23,6 +23,13 @@ namespace OC_P5.Data.Repositories
             return await _context.CarModels.FirstOrDefaultAsync(c => c.Id == carModelId);
         }
 
+        public async Task<IEnumerable<CarModel>> GetCarModelsByBrandIdAsync(int brandId)
+        {
+            return await _context.CarModels
+                                 .Where(m => m.CarBrandId == brandId)
+                                 .ToListAsync();
+        }
+
         public async Task AddCarModelAsync(CarModel carModel)
         {
             _context.CarModels.Add(carModel);

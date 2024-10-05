@@ -9,5 +9,6 @@ namespace OC_P5.Data.Repositories.Interfaces
         Task AddCarBrandAsync(CarBrand carBrand);
         Task UpdateCarBrandAsync(CarBrand carBrand);
         Task DeleteCarBrandAsync(int carBrandId);
+        Task<CarBrand> GetCarBrandByNameAsync(string brandName);
     }
 }

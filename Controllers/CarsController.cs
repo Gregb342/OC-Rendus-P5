@@ -134,7 +134,14 @@ namespace OC_P5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,MediaFiles")] CarViewModel carViewModel)
-        {
+        {            
+            bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
+            if (!isModelValid)
+            {
+                ModelState.AddModelError("CarModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+                return View(carViewModel);
+            }
+
             if (ModelState.IsValid)
             {
                 Car car = await _carService.AddCarAsync(carViewModel);
@@ -161,14 +168,6 @@ namespace OC_P5.Controllers
                         return View(carViewModel);
                     }
                 }
-            }                
-
-            // En cas d'erreur dans le formulaire
-            bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
-            if (!isModelValid)
-            {
-                ModelState.AddModelError("CarModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
-                return View(carViewModel);
             }
 
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", carViewModel.CarBrandId);
@@ -319,5 +318,31 @@ namespace OC_P5.Controllers
           return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetCarModelsByBrand(int brandId)
+        {
+            var carModels = await _carService.GetCarModelByBrandIdAsync(brandId);
+            var result = carModels.Select(car => new { car.Id, car.Model }).ToList();
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBrand(string brandName)
+        {
+            if (string.IsNullOrEmpty(brandName))
+            {
+                return Json(new {success =  false});
+            }
+
+            try
+            {
+                var newBrand = await _carService.AddNewBrandAsync(brandName);
+                return Json(new { success = true, brand = new { Id = newBrand.Id, Brand = newBrand.Brand } });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }
