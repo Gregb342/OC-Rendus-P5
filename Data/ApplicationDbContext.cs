@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OC_P5.Areas.Identity.CustomData;
 using OC_P5.Data.Seed;
 using OC_P5.Models;
 
 namespace OC_P5.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AdminUser>
     {
         #region DbSets
         public DbSet<Car> Cars { get; set; }

@@ -7,9 +7,12 @@
 <div class="container">
     <h2 class="text-center my-5">Nos voitures</h2>
 
-    <div class="text-center mb-4">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="text-center mb-4">
         <a asp-action="Create" class="btn btn-warning btn-add-car">+ Ajouter une voiture</a>
-    </div>
+        </div>
+    }
 
     <div class="car-grid">
         @foreach (var item in Model)
@@ -27,9 +30,12 @@
                             <li><strong>Finition :</strong> @ViewData[$"CarTrim_{item.Id}"]</li>
                         </ul>
                         <div class="d-flex justify-content-between">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Modifier</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Modifier</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
+                            }                                
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Détails</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
                         </div>
                     </div>
                 </div>

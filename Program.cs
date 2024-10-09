@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using OC_P5.Areas.Identity.CustomData;
 using OC_P5.Data;
 using OC_P5.Data.Repositories;
 using OC_P5.Data.Repositories.Interfaces;
@@ -15,13 +17,15 @@ namespace OC_P5
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresDB' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("ExpressVoituresDB") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresDB' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<AdminUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+                
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ICarRepository, CarRepository>();
@@ -39,6 +43,7 @@ namespace OC_P5
             builder.Services.AddScoped<ISaleService, SaleService>();
             builder.Services.AddScoped<IMediaService, MediaService>();
 
+            
 
             var app = builder.Build();
 
@@ -46,6 +51,33 @@ namespace OC_P5
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 dbContext.Database.Migrate();
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roles = new[] { "Admin" };
+
+                foreach (var role in roles)
+                {
+                    if (!roleManager.RoleExistsAsync(role).Result)
+                    {
+                        roleManager.CreateAsync(new IdentityRole(role)).Wait();
+                    }
+                }                
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AdminUser>>();
+
+                string email = "admin@express-voitures.com";
+                string password = "Admin@123";
+
+                var user = new AdminUser();
+                user.UserName = email;
+                user.Email = email;
+                user.EmailConfirmed = true;
+
+                userManager.CreateAsync(user, password).Wait();
+                userManager.AddToRoleAsync(user, "Admin").Wait();
             }
 
             // Configure the HTTP request pipeline.
@@ -73,7 +105,9 @@ namespace OC_P5
                 pattern: "{controller=Cars}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+            
             app.Run();
         }
+        
     }
 }
