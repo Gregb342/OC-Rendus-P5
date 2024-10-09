@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -121,6 +122,7 @@ namespace OC_P5.Controllers
         }
 
         // GET: Cars/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand");
@@ -131,6 +133,7 @@ namespace OC_P5.Controllers
         }
 
         // POST: Cars/Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,MediaFiles")] CarViewModel carViewModel)
@@ -179,6 +182,7 @@ namespace OC_P5.Controllers
         }
 
         // GET: Cars/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id is null)
@@ -207,6 +211,7 @@ namespace OC_P5.Controllers
         }
 
         // POST: Cars/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,RepairDescription, RepairDate, RepairCost, SaleDate, SalePrice, MediaFiles")] CarViewModel car)
@@ -276,6 +281,7 @@ namespace OC_P5.Controllers
         }
 
         // GET: Cars/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
@@ -305,6 +311,7 @@ namespace OC_P5.Controllers
         }
 
         // POST: Cars/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -318,6 +325,7 @@ namespace OC_P5.Controllers
           return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<JsonResult> GetCarModelsByBrand(int brandId)
         {
@@ -326,6 +334,7 @@ namespace OC_P5.Controllers
             return Json(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddBrand(string brandName)
         {
