@@ -42,7 +42,6 @@ namespace OC_P5.Data.Repositories
                 await _context.SaveChangesAsync();
             }            
         }
-
         public async Task<CarBrand> GetCarBrandByNameAsync(string brandName)
         {
             return await _context.CarBrands.FirstOrDefaultAsync(b => b.Brand == brandName);

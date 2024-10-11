@@ -23,6 +23,11 @@ namespace OC_P5.Data.Repositories
             return await _context.CarTrims.FirstOrDefaultAsync(c => c.Id == CarTrimId);
         }
 
+        public async Task<CarTrim> GetCarTrimByNameAsync(string trimLabel)
+        {
+            return await _context.CarTrims.FirstOrDefaultAsync(t => t.TrimLabel == trimLabel);
+        }
+
         public async Task AddCarTrimAsync(CarTrim CarTrim)
         {
             _context.CarTrims.Add(CarTrim);

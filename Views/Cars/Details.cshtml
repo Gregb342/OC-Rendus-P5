@@ -14,7 +14,7 @@
     <div class="row">
         <!-- Image de la voiture -->
         <div class="col-md-6">
-            <img src="@ViewData["MediaPath"]" alt="@ViewData["MediaLabel"]" class="img-fluid rounded" />
+            <img src="@Model.MediaPath" alt="@Model.MediaLabel" class="img-fluid rounded" />
         </div>
 
         <!-- Informations de la voiture -->
@@ -23,48 +23,48 @@
             @if (Model.Status == CarStatus.Sold)
             {
                 <div class="alert alert-success" role="alert">
-                    Vendue le @ViewData["SaleDate"] pour @ViewData["SalePrice"] €
+                    Vendue le @Model.SaleDate pour @Model.SalePrice €
                 </div>
             }
 
             <dl class="row">
                 <dt class="col-sm-3 text-muted">Année</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.YearOfProduction)</dd>
+                <dd class="col-sm-9">@Model.YearOfProduction</dd>
 
                 <dt class="col-sm-3 text-muted">Marque</dt>
-                <dd class="col-sm-9">@ViewData["CarBrand"]</dd>
+                <dd class="col-sm-9">@Model.BrandName</dd>
 
                 <dt class="col-sm-3 text-muted">Modèle</dt>
-                <dd class="col-sm-9">@ViewData["CarModel"]</dd>
+                <dd class="col-sm-9">@Model.ModelName</dd>
 
                 <dt class="col-sm-3 text-muted">Finition</dt>
-                <dd class="col-sm-9">@ViewData["CarTrim"]</dd>
+                <dd class="col-sm-9">@Model.TrimName</dd>
 
                 <dt class="col-sm-3 text-muted">Prix d'achat :</dt>
-                <dd class="col-sm-9">@ViewData["PurchasePrice"]</dd>
+                <dd class="col-sm-9">@Model.PurchasePrice €</dd>
 
                 <dt class="col-sm-3 text-muted">Date d'achat :</dt>
-                <dd class="col-sm-9">@ViewData["PurchaseDate"]</dd>
+                <dd class="col-sm-9">@Model.PurchaseDate</dd>
 
-                @if (ViewData["RepairDate"] != null || ViewData["RepairCost"] != null)
+                @if (@Model.RepairDate != null || @Model.RepairCost != null)
                 {
                     <dt class="col-sm-3 text-muted">Date de la réparation :</dt>
-                    <dd class="col-sm-9">@ViewData["RepairDate"]</dd>
+                    <dd class="col-sm-9">@Model.RepairDate</dd>
 
                     <dt class="col-sm-3 text-muted">Description de la réparation :</dt>
-                    <dd class="col-sm-9">@ViewData["RepairDescription"]</dd>
+                    <dd class="col-sm-9">@Model.RepairDescription</dd>
 
                     <dt class="col-sm-3 text-muted">Prix de la réparation :</dt>
-                    <dd class="col-sm-9">@ViewData["RepairPrice"]</dd>
+                    <dd class="col-sm-9">@Model.RepairCost €</dd>
                 }
 
-                @if (ViewData["SaleDate"] != null || ViewData["SalePrice"] != null)
+                @if (@Model.SaleDate != null || @Model.SalePrice != null)
                 {
                     <dt class="col-sm-3 text-muted">Date de la vente :</dt>
-                    <dd class="col-sm-9">@ViewData["SaleDate"]</dd>
+                    <dd class="col-sm-9">@Model.SaleDate</dd>
 
                     <dt class="col-sm-3 text-muted">Prix de la vente :</dt>
-                    <dd class="col-sm-9">@ViewData["SalePrice"]</dd>
+                    <dd class="col-sm-9">@Model.SalePrice €</dd>
                 }
 
             </dl>
