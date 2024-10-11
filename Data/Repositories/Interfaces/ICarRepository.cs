@@ -9,5 +9,6 @@ namespace OC_P5.Data.Repositories.Interfaces
         Task AddCarAsync(Car car);
         Task UpdateCarAsync(Car car);
         Task DeleteCarAsync(int carId);
+        Task<bool> CarExistsAsync(int id);
     }
 }

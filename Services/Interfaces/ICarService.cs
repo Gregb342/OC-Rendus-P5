@@ -13,5 +13,6 @@ namespace OC_P5.Services.Interfaces
         Task DeleteCarAsync(int carId);
         Task<bool> ValidateCarModelWithBrandAsync(int carModelId, int carBrandId);
         Task<IEnumerable<Media>> GetCarMediaAsync(int carId);
+        Task<bool> CarExistsAsync(int id);
     }
 }

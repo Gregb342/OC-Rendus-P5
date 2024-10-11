@@ -53,5 +53,10 @@ namespace OC_P5.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> CarExistsAsync(int id)
+        {
+            return await _context.Cars.AnyAsync(c => c.Id == id);
+        }
     }
 }

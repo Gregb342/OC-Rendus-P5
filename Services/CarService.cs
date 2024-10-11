@@ -215,6 +215,11 @@ namespace OC_P5.Services
             return await _mediaRepository.GetMediaByCarAsync(carId);
         }
 
+        public async Task<bool> CarExistsAsync(int id)
+        {
+            return await _carRepository.CarExistsAsync(id);
+        }
+
 
     }
 }
