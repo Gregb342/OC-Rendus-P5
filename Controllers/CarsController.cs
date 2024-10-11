@@ -82,25 +82,19 @@ namespace OC_P5.Controllers
 
         // GET: Cars/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand");
-            ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model");
-            ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel");
+            IEnumerable<CarBrand> carBrands = await _carBrandService.GetAllCarBrandsAsync();
+            ViewData["CarBrandId"] = new SelectList(carBrands, "Id", "Brand");
+
+            IEnumerable<CarModel> carModels = await _carModelService.GetAllCarModelsAsync();
+            ViewData["CarModelId"] = new SelectList(carModels, "Id", "Model");
+
+            IEnumerable<CarTrim> carTrims = await _carTrimService.GetAllCarTrimsAsync();
+            ViewData["CarTrimId"] = new SelectList(carTrims, "Id", "TrimLabel");
+
             ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year");
             return View();
-
-            //IEnumerable<CarBrand> carBrands = (IEnumerable<CarBrand>)_carBrandService.GetAllCarBrandsAsync();
-            //ViewData["CarBrandId"] = new SelectList(carBrands, "Id", "Brand");
-
-            //IEnumerable<CarModel> carModels = (IEnumerable<CarModel>)_carModelService.GetAllCarModelsAsync();
-            //ViewData["CarModelId"] = new SelectList(carModels, "Id", "Model");
-
-            //IEnumerable<CarTrim> carTrims = (IEnumerable<CarTrim>)_carTrimService.GetAllCarTrimsAsync();
-            //ViewData["CarTrimId"] = new SelectList(carTrims, "Id", "TrimLabel");
-
-            //ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year");
-            //return View();
         }
 
         // POST: Cars/Create
