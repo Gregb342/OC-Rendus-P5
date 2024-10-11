@@ -35,12 +35,12 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="YearOfProductionId" class="form-label">Année de production de la voiture</label>
-                    <select asp-for="YearOfProductionId" class="form-select" asp-items="ViewBag.YearOfProductionId"></select>
+                    <select asp-for="YearOfProductionId" class="form-select" asp-items="Model.YearsOfProduction"></select>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="CarBrandId" class="form-label">Marque de la voiture</label>
-                    <select asp-for="CarBrandId" class="form-select" asp-items="ViewBag.CarBrandId" id="CarBrandId"></select>
+                    <select asp-for="CarBrandId" class="form-select" asp-items="Model.CarBrands" id="CarBrandId"></select>
                 </div>
 
                 <button type="button" id="addBrandBtn" class="btn btn-primary mb-3">+ Ajouter une nouvelle marque</button>
@@ -68,7 +68,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="CarModelId" class="form-label">Modèle de la voiture</label>
-                    <select asp-for="CarModelId" class="form-select" asp-items="ViewBag.CarModelId" id="CarModelId"></select>
+                    <select asp-for="CarModelId" class="form-select" asp-items="Model.CarModels" id="CarModelId"></select>
                     <span asp-validation-for="CarModelId" class="text-danger"></span>
                 </div>
 
@@ -97,7 +97,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="CarTrimId" class="form-label">Finition de la voiture</label>
-                    <select asp-for="CarTrimId" class="form-select" asp-items="ViewBag.CarTrimId"></select>
+                    <select asp-for="CarTrimId" class="form-select" asp-items="Model.CarTrims"></select>
                 </div>
 
                 <div class="form-group mb-3">
@@ -123,19 +123,19 @@
                 <p>Voulez-vous ajouter une réparation ?</p>
 
                 <div class="form-group">
-                    <label asp-for="RepairDate" class="control-label"></label>
+                    <label asp-for="RepairDate" class="control-label">Date de réparation</label>
                     <input asp-for="RepairDate" class="form-control" type="date" />
                     <span asp-validation-for="RepairDate" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="RepairDescription" class="control-label"></label>
+                    <label asp-for="RepairDescription" class="control-label">Description de la réparation</label>
                     <input asp-for="RepairDescription" class="form-control" />
                     <span asp-validation-for="RepairDescription" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="RepairCost" class="control-label"></label>
+                    <label asp-for="RepairCost" class="control-label">Coût de la réparation</label>
                     <input asp-for="RepairCost" class="form-control" />
                     <span asp-validation-for="RepairCost" class="text-danger"></span>
                 </div>
@@ -144,13 +144,13 @@
                 <p>La voiture a-t-elle été vendue ?</p>
 
                 <div class="form-group">
-                    <label asp-for="SaleDate" class="control-label"></label>
+                    <label asp-for="SaleDate" class="control-label">Date de la vente</label>
                     <input asp-for="SaleDate" class="form-control" type="date" />
                     <span asp-validation-for="SaleDate" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="SalePrice" class="control-label"></label>
+                    <label asp-for="SalePrice" class="control-label">Prix de vente</label>
                     <input asp-for="SalePrice" class="form-control" />
                     <span asp-validation-for="SalePrice" class="text-danger"></span>
                 </div>

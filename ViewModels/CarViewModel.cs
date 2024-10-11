@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OC_P5.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -28,12 +29,20 @@ namespace OC_P5.ViewModels
 
         [BindNever]
         public int YearOfProduction { get; set; }
-        // TODO : Régler le probleme de dependance fortes des noms de brand/model/trim dans le controller
-        //[BindNever]
-        //public string CarBrandName { get; set; }
-        //[BindNever]
-        //public string CarModelName { get; set; }
-        //[BindNever]
-        //public string CarTrimName { get; set; }
+        [BindNever]
+        public string BrandName { get; set; }
+        [BindNever]
+        public string ModelName { get; set; }
+        [BindNever]
+        public string TrimName { get; set; }
+        [BindNever]
+        public string MediaPath { get; set; }
+        [BindNever]
+        public string MediaLabel { get; set; }
+
+        public IEnumerable<SelectListItem> CarBrands { get; set; }
+        public IEnumerable<SelectListItem> CarModels { get; set; }
+        public IEnumerable<SelectListItem> CarTrims { get; set; }
+        public IEnumerable<SelectListItem> YearsOfProduction { get; set; }
     }
 }

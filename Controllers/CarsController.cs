@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using OC_P5.Data;
 using OC_P5.Models;
-using OC_P5.Services;
 using OC_P5.Services.Interfaces;
 using OC_P5.ViewModels;
 
@@ -22,47 +15,36 @@ namespace OC_P5.Controllers
         private readonly IRepairService _repairService;
         private readonly ISaleService _saleService;
         private readonly IMediaService _mediaService;
-        private readonly ApplicationDbContext _context;
+        private readonly ICarTrimService _carTrimService;
+        private readonly ICarModelService _carModelService;
+        private readonly ICarBrandService _carBrandService;
+        private readonly IYearOfProductionService _yearOfProductionService;
 
         public CarsController(ICarService carService, 
                               IPurchaseService purchaseService,
                               IRepairService repairService,
                               ISaleService saleService,
                               IMediaService mediaService,
-                              ApplicationDbContext context)
+                              ICarTrimService carTrimService,
+                              ICarModelService carModelService,
+                              ICarBrandService carBrandService,
+                              IYearOfProductionService yearOfProductionService)
         {
-            _context = context;
             _carService = carService;
             _purchaseService = purchaseService;
             _repairService = repairService;
             _saleService = saleService;
             _mediaService = mediaService;
+            _carTrimService = carTrimService;
+            _carModelService = carModelService;
+            _carBrandService = carBrandService;
+            _yearOfProductionService = yearOfProductionService;
         }
 
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-            IEnumerable<CarViewModel> cars = await _carService.GetAllCarsAsync();
-
-            ViewData["CarBrandColumn"] = "Car Brand";
-            ViewData["CarModelColumn"] = "Car Model";
-            ViewData["CarTrimColumn"] = "Car Trim";
-
-            foreach (var car in cars)
-            {
-                ViewData[$"CarBrand_{car.Id}"] = _context.CarBrands.FirstOrDefault(b => b.Id == car.CarBrandId)?.Brand;
-                ViewData[$"CarModel_{car.Id}"] = _context.CarModels.FirstOrDefault(m => m.Id == car.CarModelId)?.Model;
-                ViewData[$"CarTrim_{car.Id}"] = _context.CarTrims.FirstOrDefault(t => t.Id == car.CarTrimId)?.TrimLabel;
-
-                var media = await _carService.GetCarMediaAsync(car.Id);
-
-                if (media is not null && media.Any())
-                {
-                    var firstMedia = media.FirstOrDefault();
-                    ViewData[$"MediaPath_{car.Id}"] = firstMedia?.Path;
-                    ViewData[$"MediaLabel_{car.Id}"] = firstMedia?.Label;
-                }
-            }
+            var cars = await _carService.GetAllCarsAsync();
             return View(cars);
         }
 
@@ -80,56 +62,26 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
-            Purchase purchase = await _purchaseService.GetPurchaseByCarIdAsync(car.Id);
-            if (purchase != null)
-            {
-                ViewData["PurchaseDate"] = purchase.PurchaseDate;
-                ViewData["PurchasePrice"] = purchase.PurchasePrice;
-            }
-
-            Repair repair = await _repairService.GetRepairByCarIdAsync(car.Id);
-            if (repair != null)
-            {
-                ViewData["RepairDate"] = repair.RepairDate;
-                ViewData["RepairCost"] = repair.RepairCost;
-                ViewData["RepairDescription"] = repair.Description;
-            }
-
-            ViewData["CarBrandColumn"] = "Car Brand";
-            ViewData["CarModelColumn"] = "Car Model";
-            ViewData["CarTrimColumn"] = "Car Trim";
-
-            var carBrand = await _context.CarBrands.FirstOrDefaultAsync(b => b.Id == car.CarBrandId);
-            var carModel = await _context.CarModels.FirstOrDefaultAsync(m => m.Id == car.CarModelId);
-            var carTrim = await _context.CarTrims.FirstOrDefaultAsync(t => t.Id == car.CarTrimId);
-
-            ViewData["CarBrand"] = carBrand?.Brand;
-            ViewData["CarModel"] = carModel?.Model;
-            ViewData["CarTrim"] = carTrim?.TrimLabel;
-
             var media = await _carService.GetCarMediaAsync(car.Id);
-
             if (media is not null && media.Any())
             {
                 var firstMedia = media.FirstOrDefault();
-                ViewData["MediaPath"] = firstMedia?.Path;
-                ViewData["MediaLabel"] = firstMedia?.Label;
-            }
-
-                ViewData["Media"] = media;
+                car.MediaPath = firstMedia?.Path;
+                car.MediaLabel = firstMedia?.Label;
+            }                 
 
             return View(car);
         }
 
         // GET: Cars/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand");
-            ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model");
-            ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel");
-            ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year");
-            return View();
+            CarViewModel viewModel = new CarViewModel(); 
+
+            viewModel = await PopulateViewModelSelectListsAsync(viewModel);
+            
+            return View(viewModel);
         }
 
         // POST: Cars/Create
@@ -157,7 +109,6 @@ namespace OC_P5.Controllers
                 };
                 await _purchaseService.AddPurchaseAsync(purchase);
 
-                // Traitement des fichiers images
                 if (carViewModel.MediaFiles != null && carViewModel.MediaFiles.Count > 0)
                 {
                     try
@@ -173,10 +124,7 @@ namespace OC_P5.Controllers
                 }
             }
 
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", carViewModel.CarBrandId);
-            ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", carViewModel.CarModelId);
-            ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", carViewModel.CarTrimId);
-            ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year", carViewModel.YearOfProductionId);
+            carViewModel = await PopulateViewModelSelectListsAsync(carViewModel);
 
             return View(carViewModel);
         }
@@ -203,10 +151,8 @@ namespace OC_P5.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", car.CarBrandId);
-            ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", car.CarModelId);
-            ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", car.CarTrimId);
-            ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year", car.YearOfProductionId);
+
+            car = await PopulateViewModelSelectListsAsync(car);
             return View(car);
         }
 
@@ -262,7 +208,7 @@ namespace OC_P5.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarExists(car.Id))
+                    if (!await _carService.CarExistsAsync(car.Id))
                     {
                         return NotFound();
                     }
@@ -273,10 +219,9 @@ namespace OC_P5.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Brand", car.CarBrandId);
-            ViewData["CarModelId"] = new SelectList(_context.CarModels, "Id", "Model", car.CarModelId);
-            ViewData["CarTrimId"] = new SelectList(_context.CarTrims, "Id", "TrimLabel", car.CarTrimId);
-            ViewData["YearOfProductionId"] = new SelectList(_context.YearOfProductions, "Id", "Year", car.YearOfProductionId);
+
+            car = await PopulateViewModelSelectListsAsync(car);
+
             return View(car);
         }
 
@@ -295,18 +240,6 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
-            ViewData["CarBrandColumn"] = "Car Brand";
-            ViewData["CarModelColumn"] = "Car Model";
-            ViewData["CarTrimColumn"] = "Car Trim";
-
-            var carBrand = await _context.CarBrands.FirstOrDefaultAsync(b => b.Id == car.CarBrandId);
-            var carModel = await _context.CarModels.FirstOrDefaultAsync(m => m.Id == car.CarModelId);
-            var carTrim = await _context.CarTrims.FirstOrDefaultAsync(t => t.Id == car.CarTrimId);
-
-            ViewData["CarBrand"] = carBrand?.Brand;
-            ViewData["CarModel"] = carModel?.Model;
-            ViewData["CarTrim"] = carTrim?.TrimLabel;
-
             return View(car);
         }
 
@@ -318,11 +251,6 @@ namespace OC_P5.Controllers
         {
             await _carService.DeleteCarAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CarExists(int id)
-        {
-          return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         [Authorize(Roles = "Admin")]
@@ -345,7 +273,7 @@ namespace OC_P5.Controllers
 
             try
             {
-                var newBrand = await _carService.AddNewBrandAsync(brandName);
+                var newBrand = await _carBrandService.AddNewBrandAsync(brandName);
                 return Json(new { success = true, brand = new { Id = newBrand.Id, Brand = newBrand.Brand } });
             }
             catch (InvalidOperationException ex)
@@ -353,5 +281,18 @@ namespace OC_P5.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        private async Task<CarViewModel> PopulateViewModelSelectListsAsync(CarViewModel viewModel = null)
+        {
+            viewModel ??= new CarViewModel();
+
+            viewModel.CarBrands = new SelectList(await _carBrandService.GetAllCarBrandsAsync(), "Id", "Brand", viewModel.CarBrandId);
+            viewModel.CarModels = new SelectList(await _carModelService.GetAllCarModelsAsync(), "Id", "Model", viewModel.CarModelId);
+            viewModel.CarTrims = new SelectList(await _carTrimService.GetAllCarTrimsAsync(), "Id", "TrimLabel", viewModel.CarTrimId);
+            viewModel.YearsOfProduction = new SelectList(await _yearOfProductionService.GetAllYearsOfProductionAsync(), "Id", "Year", viewModel.YearOfProductionId);
+
+            return viewModel;
+        }
+
     }
 }

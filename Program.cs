@@ -17,7 +17,7 @@ namespace OC_P5
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("ExpressVoituresDB") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresDB' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresDB' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -37,11 +37,16 @@ namespace OC_P5
             builder.Services.AddScoped<IRepairRepository, RepairRepository>();
             builder.Services.AddScoped<ISaleRepository, SaleRepository>();
             builder.Services.AddScoped<ICarMediaRepository, CarMediaRepository>();
+            builder.Services.AddScoped<IYearOfProductionRepository, YearOfProductionRepository>();
             builder.Services.AddScoped<ICarService, CarService>();
+            builder.Services.AddScoped<ICarBrandService, CarBrandService>();
+            builder.Services.AddScoped<ICarModelService, CarModelService>();
+            builder.Services.AddScoped<ICarTrimService, CarTrimService>();
             builder.Services.AddScoped<IPurchaseService, PurchaseService>();
             builder.Services.AddScoped<IRepairService, RepairService>();
             builder.Services.AddScoped<ISaleService, SaleService>();
             builder.Services.AddScoped<IMediaService, MediaService>();
+            builder.Services.AddScoped<IYearOfProductionService, YearOfProductionService>();
 
             
 

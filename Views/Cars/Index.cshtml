@@ -1,16 +1,12 @@
 ﻿@model IEnumerable<OC_P5.ViewModels.CarViewModel>
 
-@{
-    ViewData["Title"] = "Nos voitures";
-}
-
 <div class="container">
     <h2 class="text-center my-5">Nos voitures</h2>
 
     @if (User.IsInRole("Admin"))
     {
         <div class="text-center mb-4">
-        <a asp-action="Create" class="btn btn-warning btn-add-car">+ Ajouter une voiture</a>
+            <a asp-action="Create" class="btn btn-warning btn-add-car">+ Ajouter une voiture</a>
         </div>
     }
 
@@ -20,25 +16,27 @@
             @if (item.Status == CarStatus.Available || item.Status == CarStatus.Sold || item.Status == CarStatus.Purchased && User.IsInRole("Admin"))
             {
                 <div class="card car-item">
-                    <img src="@ViewData[$"MediaPath_{item.Id}"]" alt="@ViewData[$"MediaLabel_{item.Id}"]" class="card-img-top" />
+                    <img src="@item.MediaPath" alt="@item.MediaLabel" class="card-img-top" />
                     <div class="card-body">
                         <h5 class="card-title">@item.Label</h5>
                         @if (item.Status == CarStatus.Sold)
                         {
-                            <strong>Vendue !</strong>
+                            <div class="alert alert-danger" role="alert">
+                                Vendue le @item.SaleDate pour  @item.SalePrice €
+                            </div>
                         }
                         <ul class="car-details">
-                            <li><strong>Année :</strong> @Html.DisplayFor(modelItem => item.YearOfProduction)</li>
-                            <li><strong>Marque :</strong> @ViewData[$"CarBrand_{item.Id}"]</li>
-                            <li><strong>Modèle :</strong> @ViewData[$"CarModel_{item.Id}"]</li>
-                            <li><strong>Finition :</strong> @ViewData[$"CarTrim_{item.Id}"]</li>
+                            <li><strong>Année :</strong> @item.YearOfProduction</li>
+                            <li><strong>Marque :</strong> @item.BrandName</li>
+                            <li><strong>Modèle :</strong> @item.ModelName</li>
+                            <li><strong>Finition :</strong> @item.TrimName</li>
                         </ul>
                         <div class="d-flex justify-content-between">
                             @if (User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Modifier</a>
                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
-                            }                                
+                            }
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Détails</a>
                         </div>
                     </div>
