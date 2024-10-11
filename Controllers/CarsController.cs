@@ -282,6 +282,26 @@ namespace OC_P5.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> AddModel(string modelName, int brandId)
+        {
+            if (string.IsNullOrEmpty(modelName) || brandId <= 0)
+            {
+                return Json(new { success = false });
+            }
+
+            try
+            {
+                var newModel = await _carModelService.AddNewModelAsync(modelName, brandId);
+                return Json(new { success = true, model = new { Id = newModel.Id, Model = newModel.Model, BrandId = newModel.CarBrandId } });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Json(new {sucess = false, message = ex.Message});
+            }
+        }
+
         private async Task<CarViewModel> PopulateViewModelSelectListsAsync(CarViewModel viewModel = null)
         {
             viewModel ??= new CarViewModel();
