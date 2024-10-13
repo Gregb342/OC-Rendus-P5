@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using OC_P5.Areas.Identity.CustomData;
 using OC_P5.Data;
 using OC_P5.Data.Repositories;
 using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Services;
 using OC_P5.Services.Interfaces;
+using System.Globalization;
 
 namespace OC_P5
 {
@@ -47,9 +48,7 @@ namespace OC_P5
             builder.Services.AddScoped<ISaleService, SaleService>();
             builder.Services.AddScoped<IMediaService, MediaService>();
             builder.Services.AddScoped<IYearOfProductionService, YearOfProductionService>();
-
             
-
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -84,6 +83,18 @@ namespace OC_P5
                 userManager.CreateAsync(user, password).Wait();
                 userManager.AddToRoleAsync(user, "Admin").Wait();
             }
+
+            var cultureInfo = new CultureInfo("fr-FR");
+            cultureInfo.NumberFormat.CurrencySymbol = "€";
+
+            var supportedCultures = new[] { cultureInfo };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(cultureInfo),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
