@@ -22,7 +22,7 @@
                         @if (item.Status == CarStatus.Sold)
                         {
                             <div class="alert alert-danger" role="alert">
-                                Vendue le @item.SaleDate pour  @item.SalePrice €
+                                Vendue le @item.SaleDate.Value.ToShortDateString() <br/> pour  @item.SalePrice.Value.ToString("N0") €
                             </div>
                         }
                         <ul class="car-details">

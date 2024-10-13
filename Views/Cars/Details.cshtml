@@ -22,8 +22,8 @@
             <h3 class="mb-4">Prix de vente</h3>
             @if (Model.Status == CarStatus.Sold)
             {
-                <div class="alert alert-success" role="alert">
-                    Vendue le @Model.SaleDate pour @Model.SalePrice €
+                <div class="alert alert-danger" role="alert">
+                    Vendue le @Model.SaleDate.Value.ToShortDateString() pour @Model.SalePrice.Value.ToString("N0") €
                 </div>
             }
 
@@ -41,30 +41,30 @@
                 <dd class="col-sm-9">@Model.TrimName</dd>
 
                 <dt class="col-sm-3 text-muted">Prix d'achat :</dt>
-                <dd class="col-sm-9">@Model.PurchasePrice €</dd>
+                <dd class="col-sm-9">@Model.PurchasePrice.Value.ToString("N0") €</dd>
 
                 <dt class="col-sm-3 text-muted">Date d'achat :</dt>
-                <dd class="col-sm-9">@Model.PurchaseDate</dd>
+                <dd class="col-sm-9">@Model.PurchaseDate.Value.ToShortDateString()</dd>
 
                 @if (@Model.RepairDate != null || @Model.RepairCost != null)
                 {
                     <dt class="col-sm-3 text-muted">Date de la réparation :</dt>
-                    <dd class="col-sm-9">@Model.RepairDate</dd>
+                    <dd class="col-sm-9">@Model.RepairDate.Value.ToShortDateString()</dd>
 
                     <dt class="col-sm-3 text-muted">Description de la réparation :</dt>
                     <dd class="col-sm-9">@Model.RepairDescription</dd>
 
                     <dt class="col-sm-3 text-muted">Prix de la réparation :</dt>
-                    <dd class="col-sm-9">@Model.RepairCost €</dd>
+                    <dd class="col-sm-9">@Model.RepairCost.Value.ToString("N0") €</dd>
                 }
 
                 @if (@Model.SaleDate != null || @Model.SalePrice != null)
                 {
                     <dt class="col-sm-3 text-muted">Date de la vente :</dt>
-                    <dd class="col-sm-9">@Model.SaleDate</dd>
+                    <dd class="col-sm-9">@Model.SaleDate.Value.ToShortDateString()</dd>
 
                     <dt class="col-sm-3 text-muted">Prix de la vente :</dt>
-                    <dd class="col-sm-9">@Model.SalePrice €</dd>
+                    <dd class="col-sm-9">@Model.SalePrice.Value.ToString("N0") €</dd>
                 }
 
             </dl>
