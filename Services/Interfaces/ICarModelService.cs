@@ -6,6 +6,6 @@ namespace OC_P5.Services.Interfaces
     {
         Task<IEnumerable<CarModel>> GetAllCarModelsAsync();
         Task<CarModel> GetCarModelByIdAsync(int modelId);
-        Task<CarModel> AddNewModelAsync(string modelName);
+        Task<CarModel> AddNewModelAsync(string modelName, int brandId);
     }
 }
