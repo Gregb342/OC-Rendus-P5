@@ -16,18 +16,20 @@ namespace OC_P5.ViewModels
         public int CarModelId { get; set; }
         public int? CarTrimId { get; set; }
         public CarStatus Status { get; set; }
-        [DisplayFormat(DataFormatString = "{0:N2} €", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PurchaseDate { get; set; }
 
-        [RegularExpression(@"^\d{1,3}(?:[ ]?\d{3})*(?:[,.]\d{1,2})?$", ErrorMessage = "Le prix doit être un nombre valide.")]
+        [DataType(DataType.Currency)]
         public decimal? PurchasePrice { get; set; }
 
         public string? RepairDescription { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? RepairDate { get; set; }
-        [DisplayFormat(DataFormatString = "{0:N2} €", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Currency)]
         public decimal? RepairCost { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? SaleDate { get; set; }
-        [DisplayFormat(DataFormatString = "{0:N2} €", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Currency)]
         public decimal? SalePrice { get; set; }
         public List<IFormFile>? MediaFiles { get; set; }
 
