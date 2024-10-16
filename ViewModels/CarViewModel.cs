@@ -34,21 +34,25 @@ namespace OC_P5.ViewModels
         public List<IFormFile>? MediaFiles { get; set; }
 
         [BindNever]
-        public int YearOfProduction { get; set; }
+        public int? YearOfProduction { get; set; }
         [BindNever]
-        public string BrandName { get; set; }
+        public string? BrandName { get; set; }
         [BindNever]
-        public string ModelName { get; set; }
+        public string? ModelName { get; set; }
         [BindNever]
-        public string TrimName { get; set; }
+        public string? TrimName { get; set; }
         [BindNever]
-        public string MediaPath { get; set; }
+        public string? MediaPath { get; set; }
         [BindNever]
-        public string MediaLabel { get; set; }
+        public string? MediaLabel { get; set; }
 
-        public IEnumerable<SelectListItem> CarBrands { get; set; }
-        public IEnumerable<SelectListItem> CarModels { get; set; }
-        public IEnumerable<SelectListItem> CarTrims { get; set; }
-        public IEnumerable<SelectListItem> YearsOfProduction { get; set; }
+        [BindNever]
+        public IEnumerable<SelectListItem>? CarBrands { get; set; }
+        [BindNever]
+        public IEnumerable<SelectListItem>? CarModels { get; set; }
+        [BindNever]
+        public IEnumerable<SelectListItem>? CarTrims { get; set; }
+        [BindNever]
+        public IEnumerable<SelectListItem>? YearsOfProduction { get; set; }
     }
 }

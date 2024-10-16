@@ -30,7 +30,7 @@ namespace OC_P5.Services
             if (purchase is not null)
             {
                 purchase.PurchaseDate = (DateTime)carViewModel.PurchaseDate;
-                purchase.PurchasePrice = (decimal)carViewModel.PurchasePrice;
+                purchase.PurchasePrice = carViewModel.PurchasePrice;
             }
             await _purchaseRepository.UpdatePurchaseAsync(purchase);
         }

@@ -8,6 +8,7 @@ using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Services;
 using OC_P5.Services.Interfaces;
 using System.Globalization;
+using Serilog;
 
 namespace OC_P5
 {
@@ -48,6 +49,14 @@ namespace OC_P5
             builder.Services.AddScoped<ISaleService, SaleService>();
             builder.Services.AddScoped<IMediaService, MediaService>();
             builder.Services.AddScoped<IYearOfProductionService, YearOfProductionService>();
+
+            Log.Logger = new LoggerConfiguration()
+                        .WriteTo.Console()
+                        .WriteTo.File("Logs/myapp-.txt", rollingInterval: RollingInterval.Day)
+                        .CreateLogger();
+
+            // Remplacer le système de log par défaut par Serilog
+            builder.Host.UseSerilog();
             
             var app = builder.Build();
 
@@ -85,7 +94,9 @@ namespace OC_P5
             }
 
             var cultureInfo = new CultureInfo("fr-FR");
-            cultureInfo.NumberFormat.CurrencySymbol = "€";
+            cultureInfo.NumberFormat = NumberFormatInfo.InvariantInfo;
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             var supportedCultures = new[] { cultureInfo };
 
