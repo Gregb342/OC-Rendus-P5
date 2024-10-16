@@ -107,7 +107,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="PurchasePrice" class="form-label">Prix d'achat</label>
-                    <input asp-for="PurchasePrice" class="form-control" />
+                    <input asp-for="PurchasePrice" class="form-control prix" />
                     <span asp-validation-for="PurchasePrice" class="text-danger"></span>
                 </div>
 
@@ -128,5 +128,6 @@
 
 @section Scripts {
     <partial name="_scripts" />
+    <partial name="_ValidationScriptsPartial" />
 }
 

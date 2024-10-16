@@ -9,7 +9,8 @@ namespace OC_P5.Models
         public int CarId { get; set; }
         public string Description { get; set; }
         public DateTime RepairDate { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        //[Column(TypeName = "decimal(18,2)")]        
+        [DataType(DataType.Currency)]
         public decimal RepairCost { get; set; }
 
         [Required]
