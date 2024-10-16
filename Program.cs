@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using OC_P5.Areas.Identity.CustomData;
 using OC_P5.Data;
 using OC_P5.Data.Repositories;
 using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Services;
 using OC_P5.Services.Interfaces;
+using System.Globalization;
+using Serilog;
 
 namespace OC_P5
 {
@@ -48,8 +50,14 @@ namespace OC_P5
             builder.Services.AddScoped<IMediaService, MediaService>();
             builder.Services.AddScoped<IYearOfProductionService, YearOfProductionService>();
 
-            
+            Log.Logger = new LoggerConfiguration()
+                        .WriteTo.Console()
+                        .WriteTo.File("Logs/myapp-.txt", rollingInterval: RollingInterval.Day)
+                        .CreateLogger();
 
+            // Remplacer le système de log par défaut par Serilog
+            builder.Host.UseSerilog();
+            
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -84,6 +92,20 @@ namespace OC_P5
                 userManager.CreateAsync(user, password).Wait();
                 userManager.AddToRoleAsync(user, "Admin").Wait();
             }
+
+            var cultureInfo = new CultureInfo("fr-FR");
+            cultureInfo.NumberFormat = NumberFormatInfo.InvariantInfo;
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            var supportedCultures = new[] { cultureInfo };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(cultureInfo),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

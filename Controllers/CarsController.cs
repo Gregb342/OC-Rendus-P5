@@ -19,6 +19,7 @@ namespace OC_P5.Controllers
         private readonly ICarModelService _carModelService;
         private readonly ICarBrandService _carBrandService;
         private readonly IYearOfProductionService _yearOfProductionService;
+        private readonly ILogger<CarsController> _logger;
 
         public CarsController(ICarService carService, 
                               IPurchaseService purchaseService,
@@ -28,7 +29,8 @@ namespace OC_P5.Controllers
                               ICarTrimService carTrimService,
                               ICarModelService carModelService,
                               ICarBrandService carBrandService,
-                              IYearOfProductionService yearOfProductionService)
+                              IYearOfProductionService yearOfProductionService,
+                              ILogger<CarsController> logger)
         {
             _carService = carService;
             _purchaseService = purchaseService;
@@ -39,6 +41,7 @@ namespace OC_P5.Controllers
             _carModelService = carModelService;
             _carBrandService = carBrandService;
             _yearOfProductionService = yearOfProductionService;
+            _logger = logger;
         }
 
         // GET: Cars
@@ -89,7 +92,16 @@ namespace OC_P5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Label,VIN,Description,YearOfProductionId,CarBrandId,CarModelId,CarTrimId,Status,PurchaseDate,PurchasePrice,MediaFiles")] CarViewModel carViewModel)
-        {            
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError("Erreurs dans CREATE/POST : " + error.ErrorMessage);
+                }
+                return View(carViewModel);
+            }
+
             bool isModelValid = await _carService.ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId);
             if (!isModelValid)
             {
@@ -114,7 +126,7 @@ namespace OC_P5.Controllers
                     try
                     {
                         await _mediaService.ProcessMediaFilesAsync(car.Id, carViewModel.MediaFiles);
-                        return RedirectToAction(nameof(Index));
+                        return View("CreateConfirmation");
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -122,6 +134,7 @@ namespace OC_P5.Controllers
                         return View(carViewModel);
                     }
                 }
+                return View("CreateConfirmation");
             }
 
             carViewModel = await PopulateViewModelSelectListsAsync(carViewModel);
@@ -139,6 +152,13 @@ namespace OC_P5.Controllers
             }
 
             CarViewModel car = await _carService.GetCarByIdAsync(id.Value);
+            var media = await _carService.GetCarMediaAsync(car.Id);
+            if (media is not null && media.Any())
+            {
+                var firstMedia = media.FirstOrDefault();
+                car.MediaPath = firstMedia?.Path;
+                car.MediaLabel = firstMedia?.Label;
+            }
             car.PurchaseDate = (await _purchaseService.GetPurchaseByCarIdAsync(id.Value))?.PurchaseDate;
             car.PurchasePrice = (await _purchaseService.GetPurchaseByCarIdAsync(id.Value))?.PurchasePrice;
             car.RepairDate = (await _repairService.GetRepairByCarIdAsync(id.Value))?.RepairDate;
@@ -165,6 +185,15 @@ namespace OC_P5.Controllers
             if (id != car.Id)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError("Erreurs dans EDIT/POST : " + error.ErrorMessage);
+                }
+                return View(car);
             }
 
             if (ModelState.IsValid)
@@ -198,7 +227,10 @@ namespace OC_P5.Controllers
                     }
                     try
                     {
-                        await _mediaService.UpdateMediaFilesAsync(car.Id, car.MediaFiles);
+                        if (car.MediaFiles != null && car.MediaFiles.Count > 0)
+                        {
+                            await _mediaService.UpdateMediaFilesAsync(car.Id, car.MediaFiles);
+                        }
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -217,7 +249,7 @@ namespace OC_P5.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View("EditConfirmation", car);
             }
 
             car = await PopulateViewModelSelectListsAsync(car);
@@ -249,8 +281,9 @@ namespace OC_P5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var car = await _carService.GetCarByIdAsync(id);
             await _carService.DeleteCarAsync(id);
-            return RedirectToAction(nameof(Index));
+            return View("DeleteConfirmation", car);
         }
 
         [Authorize(Roles = "Admin")]

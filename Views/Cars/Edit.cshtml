@@ -108,7 +108,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="PurchasePrice" class="form-label">Prix d'achat</label>
-                    <input asp-for="PurchasePrice" class="form-control" />
+                    <input asp-for="PurchasePrice" class="form-control prix" />
                     <span asp-validation-for="PurchasePrice" class="text-danger"></span>
                 </div>
 
@@ -117,6 +117,9 @@
                     <input type="file" asp-for="MediaFiles" multiple class="form-control" />
                     <span asp-validation-for="MediaFiles" class="text-danger"></span>
                     <small class="text-muted">Sélectionnez plusieurs fichiers d'images (jpg, png, etc.)</small>
+                </div>
+                <div class="col-md-6">
+                    <img src="@Model.MediaPath" alt="@Model.MediaLabel" class="img-fluid rounded" />
                 </div>
 
                 <hr />
@@ -136,7 +139,7 @@
 
                 <div class="form-group">
                     <label asp-for="RepairCost" class="control-label">Coût de la réparation</label>
-                    <input asp-for="RepairCost" class="form-control" />
+                    <input asp-for="RepairCost" class="form-control prix" />
                     <span asp-validation-for="RepairCost" class="text-danger"></span>
                 </div>
 
@@ -151,7 +154,7 @@
 
                 <div class="form-group">
                     <label asp-for="SalePrice" class="control-label">Prix de vente</label>
-                    <input asp-for="SalePrice" class="form-control" />
+                    <input asp-for="SalePrice" class="form-control prix" />
                     <span asp-validation-for="SalePrice" class="text-danger"></span>
                 </div>
 
@@ -164,115 +167,6 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            function loadCarModels(brandId) {
-                var carModelSelect = $('#CarModelId');
-                carModelSelect.empty();
-
-                if (brandId) {
-                    $.getJSON('/Cars/GetCarModelsByBrand', { brandId: brandId }, function (data) {
-                        if (data.length > 0) {
-                            $.each(data, function (index, item) {
-                                carModelSelect.append(new Option(item.model, item.id));
-                            });
-                        } else {
-                            carModelSelect.append(new Option('-- Pas de modèle pour cette marque --', ''));
-                        }
-                    });
-                } else {
-                    carModelSelect.append(new Option('-- Sélectionnez une marque --', ''));
-                }
-            }
-
-            var selectedBrandId = $('#CarBrandId').val();
-            loadCarModels(selectedBrandId);
-
-            $('#CarBrandId').change(function () {
-                var brandId = $(this).val();
-                loadCarModels(brandId);
-            });
-
-            $('#addBrandBtn').click(function () {
-                $('#addBrandModal').modal('show');
-            });
-
-            $('#saveBrandBtn').click(function () {
-                var brandName = $('#newBrandName').val().trim();
-
-                if (brandName) {
-                    $.ajax({
-                        url: '/Cars/AddBrand',
-                        method: 'POST',
-                        data: { brandName: brandName },
-                        success: function (response) {
-                            if (response.success) {
-                                var newBrandOption = new Option(response.brand.Brand, response.brand.Id, false, true);
-                                $('#CarBrandId').append(newBrandOption);
-
-                                $('#CarBrandId').val(response.brand.Id).trigger('change');
-
-                                $('#addBrandModal').modal('hide');
-                                $('#newBrandName').val('');
-                            } else {
-                                alert(response.message || 'Erreur lors de l’ajout de la marque.');
-                            }
-                        },
-                        error: function () {
-                            alert('Erreur lors de l’enregistrement de la marque.');
-                        }
-                    });
-                } else {
-                    alert('Veuillez entrer un nom de marque valide.');
-                }
-            });
-
-            $('#addModelBtn').click(function () {
-                $('#addModelModal').modal('show');
-            });
-
-            $('#saveModelBtn').click(function () {
-                var modelName = $('#newModelName').val().trim();
-                var brandId = $('#CarBrandId').val();
-
-                if (modelName && brandId) {
-                    $.ajax({
-                        url: '/Cars/AddModel',
-                        method: 'POST',
-                        data: { modelName: modelName, brandId: brandId },
-                        success: function (response) {
-                            if (response.success) {
-                                var newModelOption = new Option(response.model.Model, response.model.Id, false, true);
-                                $('#CarModelId').append(newModelOption);
-
-                                $('#CarModelId').val(response.model.Id);
-
-                                $('#addModelModal').modal('hide');
-                                $('#newModelName').val('');
-                            } else {
-                                alert(response.message || 'Erreur lors de l’ajout du modèle.');
-                            }
-                        },
-                        error: function () {
-                            alert('Erreur lors de l’enregistrement du modèle.');
-                        }
-                    });
-                } else {
-                    alert('Veuillez entrer un nom de modèle valide et sélectionner une marque.');
-                }
-            });
-
-            $('#addBrandModal').on('hidden.bs.modal', function () {
-                $('#newBrandName').val('');
-            });
-
-            $('#addModelModal').on('hidden.bs.modal', function () {
-                $('#newModelName').val('');
-            });
-        });
-    </script>
+    <partial name="_scripts" />
+    <partial name="_ValidationScriptsPartial" />
 }

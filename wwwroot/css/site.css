@@ -85,7 +85,6 @@ h1 {
 .btn-add-car {
     display: inline-block;
     background-color: #D9A963;
-    ;
     color: #fff;
     padding: 10px 20px;
     text-transform: uppercase;
@@ -108,4 +107,24 @@ h1 {
 .nav-link.active {
     font-weight: bold;
 }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    color: #6f4e37; /* Couleur de texte similaire à celle de l'image */
+}
+
+a.btn {
+    background-color: #d2a679;
+    color: black;
+    border: none;
+}
+
+    a.btn:hover {
+        background-color: #c29b67;
+    }
+
 
