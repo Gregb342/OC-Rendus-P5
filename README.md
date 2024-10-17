@@ -42,14 +42,22 @@ Avant de cloner et exécuter ce projet, assurez-vous d'avoir installé les élé
 
 1. Clonez le dépôt GitHub :
    ```bash
-   git clone https://github.com/votre-utilisateur/oc-rendus-p5.git
-   cd oc-rendus-p5
+   git clone https://github.com/Gregb342/OC-Rendus-P5
+   cd oc-rendus-p5```
 
-## Login
+2.  Il suffit de lancer le projet, via IIS Express sur Chrome, Edge ou Firefox, la base sera automatique créée et peuplée et vous pourrez utiliser tout de suite l'application en démonstration.
+
+**NOTE** : Si vous souhaitez utiliser une autre base de donnée, la chaine de configuration se trouve dans appsettings.json
+
+## Authentification
 
 Le projet contient des données en seed qui se peuplent automatiquement dés le premier lancement du projet, y compris un login et un mot de passe admin :
 
-Login : admin@express-voitures.com
-Mot de passe : Admin@123
+**Login** : admin@express-voitures.com
+**Mot de passe** : Admin@123
 
 Ces éléments de connexion n'existent que dans un cadre de demonstration et doivent être supprimé et recréé de façon sécurisé si jamais l'application est utilisée dans un cadre réel un jour.
+
+## Auteur 
+
+Gregoire Bouteilier (c) 2024
