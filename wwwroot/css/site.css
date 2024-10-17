@@ -39,6 +39,7 @@ h1 {
 
     .car-item:hover {
         transform: translateY(-10px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
     }
 
     .car-item .card-img-top {
