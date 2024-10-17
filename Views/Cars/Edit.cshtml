@@ -43,7 +43,7 @@
                     <select asp-for="CarBrandId" class="form-select" asp-items="Model.CarBrands" id="CarBrandId"></select>
                 </div>
 
-                <button type="button" id="addBrandBtn" class="btn btn-primary mb-3">+ Ajouter une nouvelle marque</button>
+                <button type="button" id="addBrandBtn" class="btn btn-add-car">Ajouter une nouvelle marque</button>
 
                 <div class="modal fade" id="addBrandModal" tabindex="-1" aria-labelledby="addBrandModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -72,7 +72,7 @@
                     <span asp-validation-for="CarModelId" class="text-danger"></span>
                 </div>
 
-                <button type="button" id="addModelBtn" class="btn btn-primary mb-3">Ajouter un modèle</button>
+                <button type="button" id="addModelBtn" class="btn btn-add-car">Ajouter un modèle</button>
 
                 <div class="modal fade" id="addModelModal" tabindex="-1" aria-labelledby="addModelModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -123,13 +123,9 @@
                 </div>
 
                 <hr />
-                <!-- Ajoutez ces boutons avant les sections de réparation et de vente -->
 
-
-
-                <!-- Section de réparation -->
                 <hr />
-                <p>Voulez-vous ajouter une réparation ? <button type="button" class="btn btn-primary mb-3" id="showRepairBtn">+</button></p>
+                <p>Voulez-vous ajouter une réparation ? <button type="button" class="btn btn-add-car" id="showRepairBtn">+</button></p>
                 
                 <div id="repairSection" class="form-group" style="display: none;">
                     <label asp-for="RepairDate" class="control-label">Date de réparation</label>
@@ -145,7 +141,7 @@
 
                 <!-- Section de vente -->
                 <hr />
-                <p>La voiture a-t-elle été vendue ? <button type="button" class="btn btn-primary mb-3" id="showSaleBtn">+</button></p>
+                <p>La voiture a-t-elle été vendue ? <button type="button" class="btn btn-add-car" id="showSaleBtn">+</button></p>
                 
                 <div id="saleSection" class="form-group" style="display: none;">
                     <label asp-for="SaleDate" class="control-label">Date de la vente</label>
@@ -157,7 +153,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-warning btn-lg">Enregistrer</button>
+                    <button type="submit" class="btn btn-add-car">Enregistrer</button>
                 </div>
             </form>
         </div>
