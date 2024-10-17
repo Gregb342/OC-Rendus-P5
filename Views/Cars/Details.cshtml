@@ -4,12 +4,11 @@
     ViewData["Title"] = "Détails de la voiture";
 }
 
-<div class="container my-5">
+<div class="container my-5 p-md-5">
     <!-- Bouton Retour -->
-    <div class="mb-3">
-        <a asp-action="Index" class="text-muted"><i class="bi bi-arrow-left"></i> Retour</a>
+    <div class="mb-5">
+        <a asp-action="Index" class="text-muted"> ← Retour</a>
     </div>
-
     <!-- Détails de la voiture -->
     <div class="row">
         <!-- Image de la voiture -->
@@ -19,6 +18,13 @@
 
         <!-- Informations de la voiture -->
         <div class="col-md-6">
+            @if (User.IsInRole("Admin"))
+            {
+                <div>Vous avez publié cette annonce, vous pouvez la :<br />
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="text-muted">Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="text-danger">Supprimer</a>
+                </div> <br />
+            }
             <h3 class="mb-4">Prix de vente</h3>
             @if (Model.Status == CarStatus.Sold)
             {
@@ -40,6 +46,8 @@
                 <dt class="col-sm-3 text-muted">Finition</dt>
                 <dd class="col-sm-9">@Model.TrimName</dd>
 
+            @if (User.IsInRole("Admin"))
+            {
                 <dt class="col-sm-3 text-muted">Prix d'achat :</dt>
                 <dd class="col-sm-9">@Model.PurchasePrice.Value.ToString("N0") €</dd>
 
@@ -67,6 +75,7 @@
                     <dd class="col-sm-9">@Model.SalePrice.Value.ToString("N0") €</dd>
                 }
 
+            }
             </dl>
         </div>
     </div>

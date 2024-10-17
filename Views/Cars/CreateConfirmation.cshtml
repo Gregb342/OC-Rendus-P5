@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Voiture ajoutée";
+}
+
+<div class="container text-center mt-5">
+    <h2 class="text-muted">Merci !</h2>
+    <p>Votre voiture a bien été publiée</p>
+    <a href="@Url.Action("Index", "Cars")" class="btn btn-primary">Retour à l'accueil</a>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("Index", "Cars")';
+    }, 5000);
+</script>

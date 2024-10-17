@@ -126,7 +126,7 @@ namespace OC_P5.Controllers
                     try
                     {
                         await _mediaService.ProcessMediaFilesAsync(car.Id, carViewModel.MediaFiles);
-                        return RedirectToAction(nameof(Index));
+                        return View("CreateConfirmation");
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -134,6 +134,7 @@ namespace OC_P5.Controllers
                         return View(carViewModel);
                     }
                 }
+                return View("CreateConfirmation");
             }
 
             carViewModel = await PopulateViewModelSelectListsAsync(carViewModel);
@@ -248,7 +249,7 @@ namespace OC_P5.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View("EditConfirmation", car);
             }
 
             car = await PopulateViewModelSelectListsAsync(car);
@@ -280,8 +281,9 @@ namespace OC_P5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var car = await _carService.GetCarByIdAsync(id);
             await _carService.DeleteCarAsync(id);
-            return RedirectToAction(nameof(Index));
+            return View("DeleteConfirmation", car);
         }
 
         [Authorize(Roles = "Admin")]

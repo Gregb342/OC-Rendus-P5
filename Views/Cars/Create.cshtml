@@ -42,7 +42,7 @@
                     <select asp-for="CarBrandId" class="form-select" asp-items="Model.CarBrands" id="CarBrandId"></select>
                 </div>
 
-                <button type="button" id="addBrandBtn" class="btn btn-primary mb-3">+ Ajouter une nouvelle marque</button>
+                <button type="button" id="addBrandBtn" class="btn btn-add-car">Ajouter une nouvelle marque</button>
 
                 <div class="modal fade" id="addBrandModal" tabindex="-1" aria-labelledby="addBrandModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -71,7 +71,7 @@
                     <span asp-validation-for="CarModelId" class="text-danger"></span>
                 </div>
 
-                <button type="button" id="addModelBtn" class="btn btn-primary mb-3">Ajouter un modèle</button>
+                <button type="button" id="addModelBtn" class="btn btn-add-car">Ajouter un modèle</button>
 
                 <div class="modal fade" id="addModelModal" tabindex="-1" aria-labelledby="addModelModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-warning btn-lg">Publier</button>
+                    <button type="submit" class="btn btn-add-car">Publier</button>
                 </div>
             </form>
         </div>

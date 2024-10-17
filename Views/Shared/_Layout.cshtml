@@ -3,16 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - OC_P5</title>
+    <title>@ViewData["Title"] - ExpressVoitures</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!-- Custom CSS for car layout and styling -->
-    <!--<link rel="stylesheet" href="~/css/OC_P5.styles.css" asp-append-version="true" /> -->
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=X1dROpaHxxh3&format=png&color=000000" type="image/png" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="container-fluid">
+            <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Cars" asp-action="Index">Express Voitures</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,12 +19,12 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index">Accueil</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Cars" asp-action="Index">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Cars">Ajouter une voiture</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")" asp-action="Create" asp-controller="Cars">Ajouter une voiture</a>
                         </li>
-<partial name="_LoginPartial" />
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
@@ -39,7 +38,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - OC_P5 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - ExpressVoitures
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
