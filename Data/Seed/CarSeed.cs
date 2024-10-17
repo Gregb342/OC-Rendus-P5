@@ -20,5 +20,5 @@ namespace OC_P5.Data.Seed
                 new Car { Id = 10, Label = "Car 10", VIN = "1HGCM82633A852963", Description = "Car description 10", YearOfProductionId = 10, CarBrandId = 10, CarModelId = 26, CarTrimId = 9, Status = CarStatus.Available }
             );
         }
-    }   
+    }
 }

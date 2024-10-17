@@ -21,7 +21,7 @@ namespace OC_P5.Controllers
         private readonly IYearOfProductionService _yearOfProductionService;
         private readonly ILogger<CarsController> _logger;
 
-        public CarsController(ICarService carService, 
+        public CarsController(ICarService carService,
                               IPurchaseService purchaseService,
                               IRepairService repairService,
                               ISaleService saleService,
@@ -71,7 +71,7 @@ namespace OC_P5.Controllers
                 var firstMedia = media.FirstOrDefault();
                 car.MediaPath = firstMedia?.Path;
                 car.MediaLabel = firstMedia?.Label;
-            }                 
+            }
 
             return View(car);
         }
@@ -80,10 +80,10 @@ namespace OC_P5.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
-            CarViewModel viewModel = new CarViewModel(); 
+            CarViewModel viewModel = new CarViewModel();
 
             viewModel = await PopulateViewModelSelectListsAsync(viewModel);
-            
+
             return View(viewModel);
         }
 
@@ -301,7 +301,7 @@ namespace OC_P5.Controllers
         {
             if (string.IsNullOrEmpty(brandName))
             {
-                return Json(new {success =  false});
+                return Json(new { success = false });
             }
 
             try
@@ -331,7 +331,7 @@ namespace OC_P5.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Json(new {sucess = false, message = ex.Message});
+                return Json(new { sucess = false, message = ex.Message });
             }
         }
 

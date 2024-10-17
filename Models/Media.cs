@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-
-namespace OC_P5.Models
+﻿namespace OC_P5.Models
 {
     public class Media
     {

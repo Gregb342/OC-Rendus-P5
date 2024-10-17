@@ -39,8 +39,8 @@ namespace OC_P5.Services
                 throw new InvalidOperationException("Ce modèle existe déjà.");
             }
 
-            CarModel newModel = new CarModel 
-            { 
+            CarModel newModel = new CarModel
+            {
                 Model = modelName,
                 CarBrandId = brandId,
                 CarBrand = existingBrand

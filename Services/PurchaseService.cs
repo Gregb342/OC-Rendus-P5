@@ -4,7 +4,7 @@ using OC_P5.Services.Interfaces;
 using OC_P5.ViewModels;
 
 namespace OC_P5.Services
-{    
+{
     public class PurchaseService : IPurchaseService
     {
         private readonly IPurchaseRepository _purchaseRepository;
@@ -30,7 +30,7 @@ namespace OC_P5.Services
             if (purchase is not null)
             {
                 purchase.PurchaseDate = (DateTime)carViewModel.PurchaseDate;
-                purchase.PurchasePrice = carViewModel.PurchasePrice;
+                purchase.PurchasePrice = (decimal)carViewModel.PurchasePrice;
             }
             await _purchaseRepository.UpdatePurchaseAsync(purchase);
         }

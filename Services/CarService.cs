@@ -1,6 +1,4 @@
-﻿using Humanizer;
-using OC_P5.Data.Repositories;
-using OC_P5.Data.Repositories.Interfaces;
+﻿using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Models;
 using OC_P5.Services.Interfaces;
 using OC_P5.ViewModels;
@@ -176,7 +174,7 @@ namespace OC_P5.Services
 
         public async Task<IEnumerable<CarModel>> GetCarModelByBrandIdAsync(int brandId)
         {
-           return await _carModelRepository.GetCarModelsByBrandIdAsync(brandId);
+            return await _carModelRepository.GetCarModelsByBrandIdAsync(brandId);
         }
         public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {
@@ -190,7 +188,7 @@ namespace OC_P5.Services
             car.VIN = carViewModel.VIN;
             car.Description = carViewModel.Description;
             car.YearOfProductionId = carViewModel.YearOfProductionId;
-            car.CarBrandId = carViewModel.CarBrandId;            
+            car.CarBrandId = carViewModel.CarBrandId;
             car.CarModelId = carViewModel.CarModelId;
             car.CarTrimId = carViewModel.CarTrimId;
             car.Status = carViewModel.Status;

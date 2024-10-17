@@ -7,7 +7,7 @@ namespace OC_P5.Data.Repositories
     public class MediaRepository : IMediaRepository
     {
         private readonly ApplicationDbContext _context;
-        public MediaRepository(ApplicationDbContext context) 
+        public MediaRepository(ApplicationDbContext context)
         {
             _context = context;
         }

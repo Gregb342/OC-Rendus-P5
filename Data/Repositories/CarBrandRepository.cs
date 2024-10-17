@@ -40,7 +40,7 @@ namespace OC_P5.Data.Repositories
             {
                 _context.CarBrands.Remove(_context.CarBrands.Find(carBrandId));
                 await _context.SaveChangesAsync();
-            }            
+            }
         }
         public async Task<CarBrand> GetCarBrandByNameAsync(string brandName)
         {

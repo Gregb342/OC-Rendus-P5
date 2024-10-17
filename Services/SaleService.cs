@@ -1,5 +1,4 @@
-﻿using OC_P5.Data.Repositories;
-using OC_P5.Data.Repositories.Interfaces;
+﻿using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Models;
 using OC_P5.Services.Interfaces;
 using OC_P5.ViewModels;
@@ -34,7 +33,7 @@ namespace OC_P5.Services
         {
             Sale sale = await GetSaleByCarIdAsync(carId);
             if (sale is not null)
-            {                
+            {
                 sale.SaleDate = (DateTime)carViewModel.SaleDate;
                 sale.SalePrice = (decimal)carViewModel.SalePrice;
             }

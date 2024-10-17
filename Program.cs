@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using OC_P5.Data.Repositories;
 using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Services;
 using OC_P5.Services.Interfaces;
-using System.Globalization;
 using Serilog;
 
 namespace OC_P5
@@ -27,7 +27,7 @@ namespace OC_P5
             builder.Services.AddDefaultIdentity<AdminUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-                
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ICarRepository, CarRepository>();
@@ -57,7 +57,7 @@ namespace OC_P5
 
             // Remplacer le système de log par défaut par Serilog
             builder.Host.UseSerilog();
-            
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -74,7 +74,7 @@ namespace OC_P5
                     {
                         roleManager.CreateAsync(new IdentityRole(role)).Wait();
                     }
-                }                
+                }
             }
 
             using (var scope = app.Services.CreateScope())
@@ -132,9 +132,9 @@ namespace OC_P5
                 pattern: "{controller=Cars}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            
+
             app.Run();
         }
-        
+
     }
 }

@@ -26,8 +26,8 @@
     public enum CarStatus
     {
         Purchased = 0,
-        Available = 1,        
-        Sold = 2   
+        Available = 1,
+        Sold = 2
     }
 
 }

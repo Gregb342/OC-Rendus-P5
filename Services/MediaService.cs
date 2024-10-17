@@ -1,10 +1,6 @@
 ﻿using OC_P5.Data.Repositories.Interfaces;
 using OC_P5.Models;
 using OC_P5.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 public class MediaService : IMediaService
 {
@@ -61,12 +57,12 @@ public class MediaService : IMediaService
     }
 
     public async Task UpdateMediaFilesAsync(int carId, List<IFormFile> mediaFiles)
-    {       
-       var existingMedias = await _carMediaRepository.GetCarMediasByCarIdAsync(carId);
+    {
+        var existingMedias = await _carMediaRepository.GetCarMediasByCarIdAsync(carId);
         foreach (var carMedia in existingMedias)
         {
             await _carMediaRepository.RemoveCarMediaAsync(carMedia.CarId, carMedia.MediaId);
-            await _mediaRepository.RemoveMediaAsync(carMedia.MediaId);            
+            await _mediaRepository.RemoveMediaAsync(carMedia.MediaId);
         }
 
         if (mediaFiles != null && mediaFiles.Count > 0)

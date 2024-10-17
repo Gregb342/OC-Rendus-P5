@@ -2,7 +2,7 @@
 {
     public class CarMedia
     {
-        public int CarId { get; set; } 
+        public int CarId { get; set; }
         public int MediaId { get; set; }
 
         public virtual Car Car { get; set; }
