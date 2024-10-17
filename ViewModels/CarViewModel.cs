@@ -7,18 +7,23 @@ namespace OC_P5.ViewModels
 {
     public class CarViewModel
     {
+
         public int Id { get; set; }
+        [Required]
         public string Label { get; set; }
+        [Required]
         public string VIN { get; set; }
+        [Required]
         public string Description { get; set; }
         public int YearOfProductionId { get; set; }
         public int CarBrandId { get; set; }
         public int CarModelId { get; set; }
         public int? CarTrimId { get; set; }
         public CarStatus Status { get; set; }
+        [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PurchaseDate { get; set; }
-
+        [Required]
         [DataType(DataType.Currency)]
         public decimal? PurchasePrice { get; set; }
 
