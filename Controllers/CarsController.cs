@@ -296,6 +296,7 @@ namespace OC_P5.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> AddBrand(string brandName)
         {
@@ -316,6 +317,7 @@ namespace OC_P5.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> AddModel(string modelName, int brandId)
         {
