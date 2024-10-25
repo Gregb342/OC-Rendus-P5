@@ -1,0 +1,88 @@
+﻿@model OC_P5.ViewModels.CarViewModel
+
+@{
+    ViewData["Title"] = "Détails de la voiture";
+}
+
+<div class="container my-5 p-md-5">
+    <!-- Bouton Retour -->
+    <div class="mb-5">
+        <a asp-action="Index" class="text-muted"> ← Retour</a>
+    </div>
+    <!-- Détails de la voiture -->
+    <div class="row">
+        <!-- Image de la voiture -->
+        <div class="col-md-6">
+            <img src="@Model.MediaPath" alt="@Model.MediaLabel" class="img-fluid rounded" />
+        </div>
+
+        <!-- Informations de la voiture -->
+        <div class="col-md-6">
+            @if (User.IsInRole("Admin"))
+            {
+                <div>Vous avez publié cette annonce, vous pouvez la :<br />
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="text-muted">Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="text-danger">Supprimer</a>
+                </div> <br />
+            }
+            <h3 class="mb-4">Prix de vente</h3>
+            @if (Model.Status == CarStatus.Sold)
+            {
+                <div class="alert alert-danger" role="alert">
+                    Vendue le @Model.SaleDate.Value.ToShortDateString() pour @Model.SalePrice.Value.ToString("N0") €
+                </div>
+            }
+
+            <dl class="row">
+                <dt class="col-sm-3 text-muted">Année</dt>
+                <dd class="col-sm-9">@Model.YearOfProduction</dd>
+
+                <dt class="col-sm-3 text-muted">Marque</dt>
+                <dd class="col-sm-9">@Model.BrandName</dd>
+
+                <dt class="col-sm-3 text-muted">Modèle</dt>
+                <dd class="col-sm-9">@Model.ModelName</dd>
+
+                <dt class="col-sm-3 text-muted">Finition</dt>
+                <dd class="col-sm-9">@Model.TrimName</dd>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <dt class="col-sm-3 text-muted">Prix d'achat :</dt>
+                <dd class="col-sm-9">@Model.PurchasePrice.Value.ToString("N0") €</dd>
+
+                <dt class="col-sm-3 text-muted">Date d'achat :</dt>
+                <dd class="col-sm-9">@Model.PurchaseDate.Value.ToShortDateString()</dd>
+
+                @if (@Model.RepairDate != null || @Model.RepairCost != null)
+                {
+                    <dt class="col-sm-3 text-muted">Date de la réparation :</dt>
+                    <dd class="col-sm-9">@Model.RepairDate.Value.ToShortDateString()</dd>
+
+                    <dt class="col-sm-3 text-muted">Description de la réparation :</dt>
+                    <dd class="col-sm-9">@Model.RepairDescription</dd>
+
+                    <dt class="col-sm-3 text-muted">Prix de la réparation :</dt>
+                    <dd class="col-sm-9">@Model.RepairCost.Value.ToString("N0") €</dd>
+                }
+
+                @if (@Model.SaleDate != null || @Model.SalePrice != null)
+                {
+                    <dt class="col-sm-3 text-muted">Date de la vente :</dt>
+                    <dd class="col-sm-9">@Model.SaleDate.Value.ToShortDateString()</dd>
+
+                    <dt class="col-sm-3 text-muted">Prix de la vente :</dt>
+                    <dd class="col-sm-9">@Model.SalePrice.Value.ToString("N0") €</dd>
+                }
+
+            }
+            </dl>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

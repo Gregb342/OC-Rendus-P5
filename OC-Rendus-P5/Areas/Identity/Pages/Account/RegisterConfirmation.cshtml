@@ -1,0 +1,26 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Confirmation d'inscription";
+}
+
+<div class="container form-container col-md-3">
+    <h1 class="p-5">ExpressVoitures</h1>
+    @if (Model.DisplayConfirmAccountLink)
+    {
+        <p>
+            Cette application n'a actuellement pas de véritable expéditeur d'email configuré. Voir <a href="https://aka.ms/aspaccountconf">ces documents</a> pour savoir comment configurer un véritable expéditeur d'email.
+            Normalement, ceci serait envoyé par email : <a id="confirm-link" href="@Model.EmailConfirmationUrl">Cliquez ici pour confirmer votre compte</a>
+        </p>
+    }
+    else
+    {
+        <p>
+            Veuillez vérifier votre email pour confirmer votre compte.
+        </p>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
