@@ -4,7 +4,7 @@
     ViewData["Title"] = "Supprimer une voiture";
 }
 
-<div class="container">
+<div class="container text-center mt-5">
     <h2 class="text-center my-5">Supprimer la voiture</h2>
     <h5 class="text-center text-muted">Êtes-vous sûr de vouloir supprimer cette voiture ? Cette action est irréversible.</h5>
     <hr />
@@ -29,8 +29,8 @@
 
             <form asp-action="Delete" method="post" class="text-center mt-4">
                 <input type="hidden" asp-for="Id" />
-                <button type="submit" class="btn btn-danger btn-lg">Confirmer la suppression</button>
-                <a asp-action="Index" class="btn btn-secondary btn-lg ms-3">Annuler</a>
+                <button type="submit" class="btn btn-warning btn-add-car">Confirmer la suppression</button>
+                <a asp-action="Index" class="btn btn-warning btn-car-secondary">Annuler</a>
             </form>
         </div>
     </div>

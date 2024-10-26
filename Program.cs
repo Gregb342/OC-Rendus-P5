@@ -124,6 +124,17 @@ namespace OC_P5
 
             app.UseRouting();
 
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path.StartsWithSegments("/Identity/Account/Register"))
+                {
+                    context.Response.Redirect("/Error");
+                    return;
+                }
+                await next.Invoke();
+            });
+
+
             app.UseAuthentication();
             app.UseAuthorization();
 
