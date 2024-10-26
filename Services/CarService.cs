@@ -62,7 +62,7 @@ namespace OC_P5.Services
                     sale = await _saleService.GetSaleByCarIdAsync(car.Id);
                 }
 
-                var carViewModel = new CarViewModel
+                CarViewModel carViewModel = new CarViewModel
                 {
                     Id = car.Id,
                     Label = car.Label,
@@ -91,7 +91,7 @@ namespace OC_P5.Services
 
         public async Task<CarViewModel> GetCarByIdAsync(int carId)
         {
-            Car car = await _carRepository.GetCarByIdAsync(carId);
+            var car = await _carRepository.GetCarByIdAsync(carId);
 
             var carBrand = await _carBrandRepository.GetCarBrandByIdAsync(car.CarBrandId);
             var carModel = await _carModelRepository.GetCarModelByIdAsync(car.CarModelId);
@@ -150,13 +150,13 @@ namespace OC_P5.Services
         }
         public async Task<Car> AddCarAsync(CarViewModel carViewModel)
         {
-            CarModel carModel = await _carModelRepository.GetCarModelByIdAsync(carViewModel.CarModelId);
+            var carModel = await _carModelRepository.GetCarModelByIdAsync(carViewModel.CarModelId);
             if (carModel is null || carModel.CarBrandId != carViewModel.CarBrandId)
             {
                 throw new Exception("Le modèle sélectionné n'appartient pas à la marque choisie.");
             }
 
-            Car car = new Car
+            var car = new Car
             {
                 Label = carViewModel.Label,
                 VIN = carViewModel.VIN,
@@ -178,7 +178,7 @@ namespace OC_P5.Services
         }
         public async Task UpdateCarAsync(int carId, CarViewModel carViewModel)
         {
-            Car car = await _carRepository.GetCarByIdAsync(carId);
+            var car = await _carRepository.GetCarByIdAsync(carId);
             if (!await (ValidateCarModelWithBrandAsync(carViewModel.CarModelId, carViewModel.CarBrandId)))
             {
                 throw new Exception("Le modèle sélectionné n'appartient pas à la marque choisie.");
@@ -203,7 +203,7 @@ namespace OC_P5.Services
 
         public async Task<bool> ValidateCarModelWithBrandAsync(int carModelId, int carBrandId)
         {
-            CarModel carModel = await _carModelRepository.GetCarModelByIdAsync(carModelId);
+            var carModel = await _carModelRepository.GetCarModelByIdAsync(carModelId);
             if (carModel is not null && carModel.CarBrandId == carBrandId) { return true; }
             return false;
         }

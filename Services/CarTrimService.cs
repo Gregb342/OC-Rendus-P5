@@ -24,13 +24,13 @@ namespace OC_P5.Services
         }
         public async Task<CarTrim> AddNewCarTrimAsync(string trimLabel)
         {
-            CarTrim existingTrim = await _carTrimRepository.GetCarTrimByNameAsync(trimLabel);
+            var existingTrim = await _carTrimRepository.GetCarTrimByNameAsync(trimLabel);
             if (existingTrim != null)
             {
                 throw new InvalidOperationException("Cette finition existe déjà.");
             }
 
-            CarTrim newTrim = new CarTrim { TrimLabel = trimLabel };
+            var newTrim = new CarTrim { TrimLabel = trimLabel };
             await _carTrimRepository.AddCarTrimAsync(newTrim);
 
             return newTrim;

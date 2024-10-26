@@ -59,7 +59,7 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
-            CarViewModel car = await _carService.GetCarByIdAsync(id.Value);
+            var car = await _carService.GetCarByIdAsync(id.Value);
             if (car is null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace OC_P5.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
-            CarViewModel viewModel = new CarViewModel();
+            var viewModel = new CarViewModel();
 
             viewModel = await PopulateViewModelSelectListsAsync(viewModel);
 
@@ -111,9 +111,9 @@ namespace OC_P5.Controllers
 
             if (ModelState.IsValid)
             {
-                Car car = await _carService.AddCarAsync(carViewModel);
+                var car = await _carService.AddCarAsync(carViewModel);
 
-                Purchase purchase = new Purchase
+                var purchase = new Purchase
                 {
                     CarId = car.Id,
                     PurchaseDate = carViewModel.PurchaseDate ?? DateTime.Now,
@@ -151,7 +151,7 @@ namespace OC_P5.Controllers
                 return NotFound();
             }
 
-            CarViewModel car = await _carService.GetCarByIdAsync(id.Value);
+            var car = await _carService.GetCarByIdAsync(id.Value);
             var media = await _carService.GetCarMediaAsync(car.Id);
             if (media is not null && media.Any())
             {
@@ -204,7 +204,7 @@ namespace OC_P5.Controllers
                     await _purchaseService.UpdatePurchaseAsync(id, car);
                     if (car.RepairCost is not null && car.RepairDate is not null)
                     {
-                        Repair repair = new Repair
+                        var repair = new Repair
                         {
                             CarId = car.Id,
                             RepairDate = car.RepairDate ?? DateTime.Now,
@@ -216,7 +216,7 @@ namespace OC_P5.Controllers
                     }
                     if (car.SalePrice is not null && car.SaleDate is not null)
                     {
-                        Sale sale = new Sale
+                        var sale = new Sale
                         {
                             CarId = car.Id,
                             SaleDate = car.SaleDate ?? DateTime.Now,

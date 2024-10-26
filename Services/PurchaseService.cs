@@ -26,7 +26,7 @@ namespace OC_P5.Services
 
         public async Task UpdatePurchaseAsync(int carId, CarViewModel carViewModel)
         {
-            Purchase purchase = await GetPurchaseByCarIdAsync(carId);
+            var purchase = await GetPurchaseByCarIdAsync(carId);
             if (purchase is not null)
             {
                 purchase.PurchaseDate = (DateTime)carViewModel.PurchaseDate;

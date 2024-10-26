@@ -31,7 +31,7 @@ namespace OC_P5.Services
 
         public async Task UpdateSaleAsync(int carId, CarViewModel carViewModel)
         {
-            Sale sale = await GetSaleByCarIdAsync(carId);
+            var sale = await GetSaleByCarIdAsync(carId);
             if (sale is not null)
             {
                 sale.SaleDate = (DateTime)carViewModel.SaleDate;
