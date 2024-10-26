@@ -211,7 +211,7 @@ namespace OC_P5.Controllers
                             RepairCost = car.RepairCost ?? 0,
                             Description = car.RepairDescription ?? string.Empty
                         };
-                        await _repairService.UpdateRepairAsync(id, car);
+                        await _repairService.AddRepairAsync(repair);
                         car.Status = CarStatus.Available;
                     }
                     if (car.SalePrice is not null && car.SaleDate is not null)
