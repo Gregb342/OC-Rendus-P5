@@ -24,7 +24,7 @@ namespace OC_P5.Services
 
         public async Task UpdateRepairAsync(int carId, CarViewModel carViewModel)
         {
-            Repair repair = await GetRepairByCarIdAsync(carId);
+            var repair = await GetRepairByCarIdAsync(carId);
             if (repair is not null)
             {
                 repair.Description = carViewModel.RepairDescription;

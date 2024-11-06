@@ -27,13 +27,13 @@ namespace OC_P5.Services
         }
         public async Task<CarModel> AddNewModelAsync(string modelName, int brandId)
         {
-            CarBrand existingBrand = await _carBrandService.GetCarBrandByIdAsync(brandId);
+            var existingBrand = await _carBrandService.GetCarBrandByIdAsync(brandId);
             if (existingBrand == null)
             {
                 throw new InvalidOperationException("La marque spécifiée est introuvable.");
             }
 
-            CarModel existingModel = await _carModelRepository.GetCarModelByNameAsync(modelName);
+            var existingModel = await _carModelRepository.GetCarModelByNameAsync(modelName);
             if (existingModel != null)
             {
                 throw new InvalidOperationException("Ce modèle existe déjà.");

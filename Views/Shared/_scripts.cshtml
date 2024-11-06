@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-
+        const csrfToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
         // Fonction pour charger les modèles en fonction de la marque sélectionnée
         function loadCarModels(brandId) {
             var carModelSelect = document.getElementById('CarModelId');
@@ -48,9 +48,9 @@
             if (brandName) {
                 async function addBrand() {
                     try {
-                        // Création d'un objet FormData
                         const formData = new FormData();
                         formData.append('brandName', brandName);
+                        formData.append('__RequestVerificationToken', csrfToken);
 
                         const response = await fetch('/Cars/AddBrand', {
                             method: 'POST',
@@ -58,7 +58,6 @@
                         });
 
                         const data = await response.json();
-                        console.log(data);
 
                         if (data.success) {
                             var newBrandOption = new Option(data.brand.brand, data.brand.id, false, true);
@@ -80,8 +79,6 @@
             } else {
                 alert('Veuillez entrer un nom de marque valide.');
             }
-
-
         });
 
         // Afficher le modal pour ajouter un modèle
@@ -98,10 +95,10 @@
             if (modelName && brandId) {
                 async function addModel() {
                     try {
-                        // Création d'un objet FormData
                         const formData = new FormData();
                         formData.append('modelName', modelName);
                         formData.append('brandId', brandId);
+                        formData.append('__RequestVerificationToken', csrfToken);
 
                         const response = await fetch('/Cars/AddModel', {
                             method: 'POST',
@@ -112,10 +109,10 @@
 
                         if (data.success) {
                             var newModelOption = new Option(data.model.model, data.model.id, false, true);
-                            document.getElementById('CarModelId').appendChild(newModelOption);
-                            document.getElementById('CarModelId').value = data.model.id;
+                            var carModelSelect = document.getElementById('CarModelId');
+                            carModelSelect.innerHTML = '';
+                            loadCarModels(data.model.brandId);
 
-                            // Fermer la modale après ajout
                             var addModelModal = bootstrap.Modal.getInstance(document.getElementById('addModelModal'));
                             addModelModal.hide();
                         } else {
@@ -132,7 +129,6 @@
             }
         });
 
-
         // Réinitialiser les champs des modales après fermeture
         document.getElementById('addBrandModal').addEventListener('hidden.bs.modal', function () {
             document.getElementById('newBrandName').value = '';
@@ -142,11 +138,8 @@
             document.getElementById('newModelName').value = '';
         });
 
-    });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var forms = document.querySelectorAll("form");
-
+        // Gestion des prix dans le formulaire
+        var forms = document.querySelectorAll("form");
         forms.forEach(function (form) {
             form.addEventListener("submit", function (event) {
                 var prixInputs = form.querySelectorAll("input.prix");
@@ -156,6 +149,6 @@
                     input.value = valeur.replace(",", ".");
                 });
             });
-            });
         });
+    });
 </script>

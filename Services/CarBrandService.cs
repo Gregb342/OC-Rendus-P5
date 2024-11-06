@@ -25,13 +25,13 @@ namespace OC_P5.Services
 
         public async Task<CarBrand> AddNewBrandAsync(string brandName)
         {
-            CarBrand existingBrand = await _carBrandRepository.GetCarBrandByNameAsync(brandName);
+            var existingBrand = await _carBrandRepository.GetCarBrandByNameAsync(brandName);
             if (existingBrand != null)
             {
                 throw new InvalidOperationException("Cette marque existe déjà.");
             }
 
-            CarBrand newBrand = new CarBrand { Brand = brandName };
+            var newBrand = new CarBrand { Brand = brandName };
             await _carBrandRepository.AddCarBrandAsync(newBrand);
 
             return newBrand;
