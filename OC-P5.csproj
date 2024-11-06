@@ -10,9 +10,13 @@
 
   <ItemGroup>
     <Compile Remove="Data\Migrations\**" />
+    <Compile Remove="ExpressVoitures\**" />
     <Content Remove="Data\Migrations\**" />
+    <Content Remove="ExpressVoitures\**" />
     <EmbeddedResource Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="ExpressVoitures\**" />
     <None Remove="Data\Migrations\**" />
+    <None Remove="ExpressVoitures\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ExpressVoitures\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 
